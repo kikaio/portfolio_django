@@ -5,14 +5,14 @@ import os, json
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SETTING_FOLDER_DIR = os.path.dirname(os.path.abspath(__file__))
-BASE_DIR = os.path.dirname(SETTING_FOLDER_DIR)
+BASE_DIR = os.path.dirname(os.path.dirname(SETTING_FOLDER_DIR))
 
 
 def get_json_content(file_name):
     content = None
     full_name = os.path.join(SETTING_FOLDER_DIR, file_name)
     with open(full_name) as f:
-        content = json.load(f.read())
+        content = json.loads(f.read())
     return content
 
 def get_val_from_json(content, key:str):
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'gateway',
+    'gmtool',
 ]
 
 MIDDLEWARE = [
@@ -55,10 +57,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'portfolio.urls'
 
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            TEMPLATE_PATH,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,3 +128,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
+
+STATICFILES_DIRS = [
+]
+
