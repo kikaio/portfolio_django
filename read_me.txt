@@ -1,1 +1,5 @@
 해당 웹 페이지의 무단 도용을 금지합니다.
+
+lib list
+. pip
+. django
