@@ -3,3 +3,5 @@ mvenv/
 gmtool/migrations/
 portfolio/__pycache__/__init__.cpython-38.pyc
 portfolio/__pycache__/settings.cpython-38.pyc
+gateway/__init__.py
+gateway/migrations/__init__.py
