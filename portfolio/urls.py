@@ -20,4 +20,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('gateway.urls')),
+    # path('', include('gateway.urls')),
+    path('gmtool', include('gmtool.urls')),
 ]
