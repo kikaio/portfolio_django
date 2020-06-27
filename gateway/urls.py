@@ -6,5 +6,6 @@ from gateway import views
 app_name = 'gateway'
 
 urlpatterns = [
-    path('', views.index, name=''),
+    path('', views.index, name='index'),
+    path('contact', views.contact, name='contact'),
 ]
