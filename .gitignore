@@ -11,3 +11,4 @@ portfolio/settings/__pycache__/__init__.cpython-38.pyc
 gmtool/__pycache__/
 portfolio/__pycache__/
 gateway/__pycache__/
+db.sqlite3
