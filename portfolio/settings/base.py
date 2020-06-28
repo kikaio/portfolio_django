@@ -7,6 +7,7 @@ import os, json
 SETTING_FOLDER_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(SETTING_FOLDER_DIR))
 
+DEVELOPER_MAIL = 'gjduddnr5923@naver.com'
 
 def get_json_content(file_name):
     content = None
@@ -22,7 +23,18 @@ def get_val_from_json(content, key:str):
         return content[key]
     except:
         pass
+#장고 smtp 관련 계정 및 설정정보 읽기
+smtp_key = get_json_content('secret_key.json')
+EMAIL_BACKEND = get_val_from_json(smtp_key, 'EMAIL_BACKEND')
+EMAIL_HOST = get_val_from_json(smtp_key, 'EMAIL_HOST')
+EMAIL_HOST_USER = get_val_from_json(smtp_key, 'EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_val_from_json(smtp_key, 'EMAIL_HOST_PASSWORD')
+EMAIL_PORT = get_val_from_json(smtp_key, 'EMAIL_PORT')
+EMAIL_USE_TLS = get_val_from_json(smtp_key, 'EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
 
+
+# 장고 비밀키 읽기
 secret_key = get_json_content('secret_key.json')
 SECRET_KEY = get_val_from_json(secret_key, 'SECRET_KEY')
 
