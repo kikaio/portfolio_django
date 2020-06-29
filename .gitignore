@@ -19,3 +19,8 @@ gmtool/gm/__pycache__/view.cpython-38.pyc
 gmtool/gm/__pycache__/model.cpython-38.pyc
 gmtool/gm/__pycache__/__init__.cpython-38.pyc
 gateway/contact/__pycache__/form.cpython-38.pyc
+static/admin/
+static/gateway/img/icon_gmtool.png
+static/gateway/img/icon_commingsoon.png
+static/gateway/css/album.css
+static/gmtool/
