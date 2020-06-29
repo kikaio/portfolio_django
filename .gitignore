@@ -15,3 +15,7 @@ db.sqlite3
 gateway/Forms/__pycache__/form.cpython-38.pyc
 portfolio/settings/smtp_key.json
 gateway/migrations/__pycache__/__init__.cpython-38.pyc
+gmtool/gm/__pycache__/view.cpython-38.pyc
+gmtool/gm/__pycache__/model.cpython-38.pyc
+gmtool/gm/__pycache__/__init__.cpython-38.pyc
+gateway/contact/__pycache__/form.cpython-38.pyc
