@@ -7,7 +7,9 @@ import os, json
 SETTING_FOLDER_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(SETTING_FOLDER_DIR))
 
-DEVELOPER_MAIL = 'gjduddnr5923@naver.com'
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
 
 def get_json_content(file_name):
     content = None
@@ -23,23 +25,24 @@ def get_val_from_json(content, key:str):
         return content[key]
     except:
         pass
-#장고 smtp 관련 계정 및 설정정보 읽기
-smtp_key = get_json_content('secret_key.json')
-EMAIL_BACKEND = get_val_from_json(smtp_key, 'EMAIL_BACKEND')
-EMAIL_HOST = get_val_from_json(smtp_key, 'EMAIL_HOST')
-EMAIL_HOST_USER = get_val_from_json(smtp_key, 'EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = get_val_from_json(smtp_key, 'EMAIL_HOST_PASSWORD')
-EMAIL_PORT = get_val_from_json(smtp_key, 'EMAIL_PORT')
-EMAIL_USE_TLS = get_val_from_json(smtp_key, 'EMAIL_USE_TLS')
-DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
 
 
 # 장고 비밀키 읽기
 secret_key = get_json_content('secret_key.json')
 SECRET_KEY = get_val_from_json(secret_key, 'SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#장고 smtp 관련 계정 및 설정정보 읽기
+smtp_key = get_json_content('smtp_key.json')
+DEVELOPER_MAIL = 'gjduddnr5923@naver.com'
+EMAIL_USE_TLS = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = get_val_from_json(smtp_key, 'EMAIL_HOST')
+EMAIL_HOST_USER = get_val_from_json(smtp_key, 'EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_val_from_json(smtp_key, 'EMAIL_HOST_PASSWORD')
+EMAIL_PORT = get_val_from_json(smtp_key, 'EMAIL_PORT')
+DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
+
 
 ALLOWED_HOSTS = []
 
@@ -144,4 +147,5 @@ STATIC_ROOT = 'static/'
 
 STATICFILES_DIRS = [
 ]
+
 

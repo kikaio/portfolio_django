@@ -1,0 +1,11 @@
+{%extends 'gateway/base.html'%}
+
+{%block contents%}
+<div class="container">
+  {% if form %}
+  <form>
+    {{form.as_p}}
+  </form>
+  {% endif %}
+</div>
+{%endblock%}
