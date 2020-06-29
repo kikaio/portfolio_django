@@ -1,2 +1,1 @@
-from .Forms.form import *
-
+from .contact.form import *
