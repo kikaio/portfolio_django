@@ -79,12 +79,12 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Login Screens:</h6>
+                <a class="collapse-item" href="{% url 'gmtool:gm-login'%}">Login</a>
                 {% if user.is_authenticated%}
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="forgot-password.html">Change Password</a>
+                <a class="collapse-item" href="{% url 'gmtool:gm-change-pw'%}">Change Password</a>
                 {%else%}
-                <a class="collapse-item" href="register.html">Register</a>
-                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                <a class="collapse-item" href="{% url 'gmtool:gm-register'%}">Register</a>
+                <a class="collapse-item" href="{% url 'gmtool:gm-reset-pw'%}">Forgot Password</a>
                 {% endif %}
                 <div class="collapse-divider"></div>
                 <h6 class="collapse-header">Other Pages:</h6>

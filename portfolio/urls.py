@@ -21,5 +21,5 @@ from django.contrib import auth
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', include('gateway.urls')),
-    path('gmtool', include('gmtool.urls')),
+    path('gmtool/', include('gmtool.urls')),
 ]
