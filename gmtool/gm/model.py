@@ -89,3 +89,27 @@ class Gm(AbstractBaseUser, PermissionsMixin):
 
     pass
 
+
+#
+# class GmExtends(models.Model):
+#     """
+#     gm user의 추가적인 속성들.[확장성 고려.]
+#     """
+#     from datetime import datetime, timedelta
+#
+#     @classmethod
+#     def get_date_pw_valid(cls):
+#         dt = cls.datetime.utcnow() + cls.timedelta(days=7)
+#         return dt
+#
+#     gm = models.ForeignKey(
+#         Gm,
+#         related_name='extends',
+#         related_query_name='extends',
+#         on_delete=models.CASCADE,
+#     )
+#
+#     date_pw_valid = models.DateTimeField(default=get_date_pw_valid)
+#     date_registed = models.DateTimeField(default=datetime.utcnow)
+#
+#     pass
