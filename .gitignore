@@ -14,3 +14,4 @@ gateway/__pycache__/
 db.sqlite3
 gateway/Forms/__pycache__/form.cpython-38.pyc
 portfolio/settings/smtp_key.json
+gateway/migrations/__pycache__/__init__.cpython-38.pyc
