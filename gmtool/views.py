@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
+from gmtool.gm.view import *
+
+
 # Create your views here.
 
 TEMPLATE_ROOT = 'gmtool'

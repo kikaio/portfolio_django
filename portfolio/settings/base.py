@@ -31,6 +31,9 @@ def get_val_from_json(content, key:str):
 secret_key = get_json_content('secret_key.json')
 SECRET_KEY = get_val_from_json(secret_key, 'SECRET_KEY')
 
+AUTH_USER_MODEL = 'gmtool.Gm'
+
+
 #장고 smtp 관련 계정 및 설정정보 읽기
 smtp_key = get_json_content('smtp_key.json')
 DEVELOPER_MAIL = 'gjduddnr5923@naver.com'
