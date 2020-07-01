@@ -7,6 +7,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from gmtool.gm.model import Gm
+from django.utils.http import urlsafe_base64_decode
 
 class GmCreateForm(forms.ModelForm):
 
@@ -74,11 +75,6 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
     pass
-
-
-admin.site.register(Gm, UserAdmin)
-admin.site.unregister(Group)
-
 
 
 class GmRegistForm(forms.ModelForm):
@@ -221,10 +217,10 @@ class GmPwResetForm(forms.Form):
         from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
         from django.contrib.auth.tokens import default_token_generator
 
-
         email = self.cleaned_data['email']
         if not Gm.objects.filter(email__exact=email).exists():
-            pass
+            raise Exception(_("this mail doesn't exists"))
+
         gm = Gm.objects.get(email__exact=email)
         c = {
             'email': email,
@@ -248,7 +244,7 @@ class GmPwResetForm(forms.Form):
         pass
 
 
-from django.utils.http import urlsafe_base64_decode
+
 
 class GmPwTokenForm(forms.Form):
     from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -285,13 +281,15 @@ class GmPwTokenForm(forms.Form):
         pw_confirm = self.cleaned_data['pw_confirm']
         if pw == pw_confirm:
             return pw_confirm
+
         raise forms.ValidationError(_('password, password confirm field is different'))
 
     def check_token(self):
         if self.uid is not None and  Gm.objects.filter(id__exact=self.uid).exists():
-            gm = Gm.objects.get(self.uid)
+            gm = Gm.objects.get(id = self.uid)
             if self.token_generator.check_token(gm, self.token):
-                if not authenticate(self.request, gm):
+                self.request.user = gm
+                if not authenticate(self.request):
                     pw = self.cleaned_data['pw']
                     gm.set_password(pw)
                     gm.save()

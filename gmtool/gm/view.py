@@ -68,7 +68,6 @@ def gm_reset_pw(req):
         if form.is_valid():
             form.send_reset_mail(req)
             # 메일 전송 완료 template로 redirect
-            print('aaa')
             return redirect(reverse(form.template_name_req))
     elif req.method=='GET':
         form = GmPwResetForm()
@@ -87,14 +86,12 @@ def gm_reset_pw_token(req, uidb64, token):
     context = {}
     form = None
     if req.method=='POST':
-        form = GmPwTokenForm(request=req, uid=uidb64, token=token)
+        form = GmPwTokenForm(req.POST, request=req, uid=uidb64, token=token)
         if form.is_valid():
-            print('is valid?')
             if form.check_token():
-                print('checked token')
                 return redirect(reverse(form.template_name_done))
     elif req.method == 'GET':
-        form = GmPwTokenForm(req.POST, request=req, uid=uidb64, token=token)
+        form = GmPwTokenForm(request=req, uid=uidb64, token=token)
 
     context['reset_token'] = True
     context['form'] = form
