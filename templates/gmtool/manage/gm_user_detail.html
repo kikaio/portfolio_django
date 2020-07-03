@@ -1,0 +1,59 @@
+{% extends "gmtool/base.html" %}
+
+
+{% load static %}
+
+{% block contents %}
+<link rel="stylesheet" href="{% static 'main.css'%}">
+
+<div style="display: table-row;">
+	<div class="main">
+		<h2>Gm Detail</h2>
+		{% if gm_user%}
+		<ul>
+			<table border="1">
+				<tr>
+				<th><label>email</label></th>
+				<td>{{gm_user.email}}</td>
+				</tr>
+				<tr></tr>
+				<th>fullName</th>
+				<td>{{gm_user.fullName}}</td>
+				<tr>
+				<th>department</th>
+				<td>{{gm_user.department}}</td>
+				</tr>
+				<tr>
+				<th>is_active</th>
+				<td>{{gm_user.is_active}}</td>
+				</tr>
+				<tr>
+				<th>is_superuser</th>
+				<td>{{gm_user.is_superuser}}</td>
+				</tr>
+				<tr>
+				<th>is_locked</th>
+				<td>{{gm_user.is_locked}}</td>
+				</tr>
+				<tr>
+				<th>date_regist</th>
+				<td>{{gm_user.date_regist}}</td>
+				</tr>
+				<tr>
+				<th>date_locked</th>
+				<td>{{gm_user.date_locked}}</td>
+				</tr>
+				<tr>
+				<th>date_expired_pw</th>
+				<td>{{gm_user.date_expired_pw}}</td>
+				</tr>
+			</table>
+			<button type="button" onclick="location.href='{% url 'gmtool:gm-user-update' gm_user.id%}'">Edit</button>
+		</ul>
+		{% endif %}
+		<div>
+			<p>generic.detailView 를 사용했습니다</p>
+		</div>
+	</div>
+</div>
+{%endblock%}

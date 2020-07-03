@@ -100,5 +100,4 @@ def gm_reset_pw_token(req, uidb64, token):
 def gm_reset_pw_done(req):
     context = {}
     context['reset_done'] = True
-
     return render_gm(req, 'forgot_password.html', context)

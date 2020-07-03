@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{%block contents %}
+<div style="display: table-row;">
+	<div class="main">
+		<ul>
+			{% if form%}
+			<form action="" method="post">
+				{% csrf_token%}
+				{{form.as_p}}
+				<input type="submit" name="" value="update">
+			</form>
+			{% endif %}
+		</ul>
+	</div>
+</div>
+{%endblock%}

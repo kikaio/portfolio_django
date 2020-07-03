@@ -1,0 +1,118 @@
+{% extends "gmtool/base.html" %}
+
+{% load static %}
+
+{% block contents %}
+<div class ="search_bar">
+	<h2>Gm Search</h2>
+	<form action="" method="post">
+		{%csrf_token%}
+		<select name="choice_field">
+			{% for ele in choices%}
+				{% ifequal ele choice_selected %}
+					<option value="{{ele}}" selected="selected">{{ele}}</option>
+				{% else %}
+					<option value="{{ele}}">{{ele}}</option>
+				{% endifequal %}
+			{% endfor %}
+		</select>
+		<input type="text" name="search_text" value="{{search_text}}">
+		<input type="submit" name="" value="search">
+	</form>
+</div>
+
+<div style="display: table-row;">
+	<div class="main">
+	<h2>Gm list</h2>
+
+		<div class="active">
+			<li>
+				Active GmUsers
+			</li>
+			<ul class="subactive" >
+				<table border="1">
+					<thead>
+						<th>mail address</th>
+						<th>is super user</th>
+						<th>last login date[UTC]</th>
+					</thead>
+					{% if gm_user_list%}
+					<tbody>
+					{% for gm_user in gm_user_list%}
+						{% if gm_user.is_active %}
+						<tr>
+							<td>
+								<a style="display: table-cell;" href="{% url 'gmtool:gm-user-detail' gm_user.id %}">{{gm_user.email}}</a>
+							</td>
+							<td>{{gm_user.is_superuser}}</td>
+							<td>{{gm_user.last_login|date:'Y-m-d H:i:s'}}</td>							
+						</tr>
+						{% endif %}
+					{% endfor %}
+					</tbody>
+					<tfoot>
+					</tfoot>
+					{% else %}
+					<tfoot>
+					</tfoot>
+					{% endif %}
+				</table>
+			</ul>
+		</div>
+
+		<div class="dormant">
+			<li>Dormant GmUsers</li>
+			<ul class="subdormant">
+				<table border="1">
+					<thead>
+						<th>mail address</th>
+						<th>is super user</th>
+						<th>last login date[UTC]</th>
+					</thead>
+					{% if gm_user_list%}
+					<tbody>
+					{% for gm_user in gm_user_list%}
+						{% if not gm_user.is_active %}
+						<tr>
+							<td>
+								<a style="display: table-cell;" href="{% url 'gmtool:gm-user-detail' gm_user.id %}">{{gm_user.email}}</a>
+							</td>
+							<td>{{gm_user.is_superuser}}</td>
+							<td>{{gm_user.last_login|date:'Y-m-d H:i:s'}}</td>	
+						</tr>
+						{% endif %}
+					{% endfor %}
+					</tbody>
+					<tfoot>
+					</tfoot>
+					{% else %}
+					<tfoot>
+					</tfoot>
+					{% endif %}
+				</table>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(".dormant").click(function(){
+		var curtable = $(this).find(".subdormant")
+		if(curtable.is(":visible"))
+			curtable.slideUp();
+		else
+			curtable.slideDown();
+	})
+
+	$(".active").click(function(){
+		var curtable = $(this).find(".subactive")
+		if(curtable.is(":visible"))
+			curtable.slideUp();
+		else
+			curtable.slideDown();
+	})
+</script>
+
+{%endblock%}
+
+

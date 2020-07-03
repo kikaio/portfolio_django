@@ -72,24 +72,61 @@ class Gm(AbstractBaseUser, PermissionsMixin):
     def is_admin(self):
         return self.is_superuser
 
-    def has_perm(self, perm, obj=None):
-        """
-        user의 perm 보유 여부를 반환한다. superuser의 경우 모든 권한을 보유한 것으로 판단한다.
-        :param perm: 확인할 권한.
-        :param obj: ???
-        :return: perm 보유 여부.
-        """
-        if self.is_superuser:
-            return True
-        # 우선 모두 True 반환.
-        return True
-
     def has_module_perms(self, app_label):
         return True
 
     pass
 
+class AnonymousGm():
+    id = None
+    email = None
+    is_active = False
+    is_locked = False
 
+    def get_user_id(self):
+        return -1
+
+    def get_full_name(self):
+        return self.email
+
+    def get_short_name(self):
+        return self.email
+
+    def is_staff(self):
+        " is this user a staff? "
+        return False
+
+    @property
+    def is_anonymous(self):
+        return True
+
+    @property
+    def is_superuser(self):
+        return False
+
+    @property
+    def is_authenticated(self):
+        return False
+
+    def __int__(self):
+        raise TypeError('Cannot cast AnonymousUser to int. Are you trying to use it in place of User?')
+
+    def save(self):
+        raise NotImplementedError("Django doesn't provide a DB representation for AnonymousUser.")
+
+    def delete(self):
+        raise NotImplementedError("Django doesn't provide a DB representation for AnonymousUser.")
+
+    def set_password(self, raw_password):
+        raise NotImplementedError("Django doesn't provide a DB representation for AnonymousUser.")
+
+    def check_password(self, raw_password):
+        raise NotImplementedError("Django doesn't provide a DB representation for AnonymousUser.")
+
+    def __str__(self):
+        return 'AnonymousGm'
+
+pass
 #
 # class GmExtends(models.Model):
 #     """

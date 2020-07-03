@@ -1,0 +1,74 @@
+{% extends "gmtool/base.html" %}
+
+{% load static %}
+{% load tag_gmtool %}
+
+{% block contents %}
+
+<div style="display: table-row;">
+	<div class="main">
+		<div>
+		{% if form %}
+			<h1>Permission add to gm</h1>
+			<ul>
+			<form accept="" method="post">
+				<table border="1">
+				{%csrf_token%}
+				{{form.as_table}}
+				</table>
+				<input type="submit" name="" value = "add">
+			</form>
+			</ul>
+		{% endif %}				
+		</div>
+		<div>
+			<h1>Gm's Permission List</h1>
+			{% if object_list and gm_perm_dic %}
+			<ul >
+				{% for user in object_list %}
+				{% if user.id in gm_perm_dic %}
+				{% with perm_list=gm_perm_dic|get_list_item_from_dic:user.id  %}
+				{% with perm_cnt=perm_list|get_list_item_count %}
+				<li>
+				{% if 0 < perm_cnt %}
+					<p>{{user.get_full_name}} has permission : {{perm_cnt}}</p>
+					<table border="1">
+						<thead>
+							<th>Content Type</th>
+							<th>Code</th>
+							<th>Desc</th>
+							<th>Delete</th>
+						</thead>
+						<tbody>
+							{% for user_perm in perm_list %}
+							<tr>
+								<td>{{user_perm.content_type_id}}</td>
+								<td>{{user_perm.codename}}</td>							
+								<td>{{user_perm.name}}</td>
+								<td>
+									<button type="button" onclick = "location.href='{%url 'gmtool:gm-perm-delete' user.id user_perm.id%}'">DoDelete</button>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+						<tfoot>
+						</tfoot>
+					</table>
+				{% else %}
+				<p>{{user.get_full_name}} hasn't permission anything</p>
+				{% endif %}
+				{% endwith %}
+				{% endwith %}
+				</li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+		{% include "gmtool/paginationbar.html"%}
+	</div>
+</div>
+
+{%endblock%}
+
+

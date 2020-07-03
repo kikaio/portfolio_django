@@ -1,0 +1,49 @@
+{% extends "gmtool/base.html" %}
+{% load static %}
+
+{%block contents%}
+<div style="display: table-row;">
+	<div class="main">
+		<div>
+			<button type = "button" onclick="location.href='{% url 'gmtool:perm-create'%}'">Create new perm</button>
+		</div>
+		<div class="active">
+			<li>
+				Permission Code List
+			</li>
+			<ul class="subactive" >
+				{% if form%}
+				<form action="" method="POST">
+					{%csrf_token%}
+					<table border="1">
+						<thead>
+							<th>Content</th>
+							<th>Code</th>
+							<th>Desc</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{form.content_types}}</td>
+								<td>{{form.code}}</td>							
+								<td>{{form.desc}}</td>
+							</tr>
+						</tbody>
+						<tfoot>
+						</tfoot>
+					</table>
+					<input type="submit" value="{{_('Create')}}">
+				</form>
+				{% endif %}
+			</ul>
+		</div>
+		{% include "gmtool/paginationbar.html"%}
+	</div>
+</div>
+
+<script type="text/javascript">
+
+</script>
+
+{%endblock%}
+
+

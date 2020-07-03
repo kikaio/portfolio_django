@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from gmtool.gm.view import *
-
+from gmtool.manage.view import *
 
 # Create your views here.
 

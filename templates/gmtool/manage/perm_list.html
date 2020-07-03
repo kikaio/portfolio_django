@@ -1,0 +1,50 @@
+{% extends 'gmtool/base.html' %}
+
+{% block contents %}
+
+<div style="display: table-row;">
+	<div class="main">
+		<div>
+			<h2>Permission list</h2>
+		</div>
+		<div>
+			<button type = "button" onclick="location.href='{% url 'gmtool:perm-create'%}'">Create new perm</button>
+		</div>
+		<div class="active">
+			<li>
+				Permission Code List
+			</li>
+			<ul class="subactive" >
+				<table border="1">
+					<thead>
+						<th>Content</th>
+						<th>Code</th>
+						<th>Desc</th>
+						<th>Delete</th>
+					</thead>
+					{% if perm_code_list%}
+					<tbody>
+					{% for perm_code in perm_code_list%}
+						<tr>
+							<td>{{perm_code.content_type_id}}</td>
+							<td>{{perm_code.codename}}</td>
+							<td>{{perm_code.name}}</td>
+							<td>
+								<button type="button" onclick = "location.href='{%url 'gmtool:perm-delete' perm_code.id%}'">DoDelete</button>
+							</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+					<tfoot>
+					</tfoot>
+					{% else %}
+					<tfoot>
+					</tfoot>
+					{% endif %}
+				</table>
+			</ul>
+		</div>
+		{% include "gmtool/paginationbar.html"%}
+	</div>
+</div>
+{% endblock %}
