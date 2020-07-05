@@ -3,6 +3,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
+from django.contrib.auth import logout, authenticate
+
+from gmtool.log.model import *
 
 User = get_user_model()
 
@@ -119,3 +122,47 @@ class GmUserUpdateForm(forms.ModelForm):
 			'email', 'is_superuser', 'is_active', 'is_locked'
 		]
 	email = forms.CharField(disabled=True)
+pass
+
+
+class GmDeactivateForm(forms.ModelForm):
+
+	class Meta:
+		model = User
+		fields = [
+			'email', 'password'
+		]
+	email = forms.CharField(
+		disabled = True,
+		label = _('Email'),
+	)
+
+	password = forms.CharField(
+		widget = forms.PasswordInput,
+		initial = '',
+	)
+
+
+	def clean_password(self):
+		pw = self.cleaned_data.get('password')
+		if pw is None:
+			raise forms.ValidationError(_('password is required'))
+		cur_gm_email = self.cleaned_data.get('email')
+		if (cur_gm_email is None) or (cur_gm_email==''):
+			raise forms.ValidationError(_('cur_user is not exist'))
+		cur_user = self.authenticate(email=cur_gm_email, password=pw)
+		if cur_user is None:
+			raise forms.ValidationError(_('password is incollect'))
+		return cur_user.password
+
+	def save(self, commit = True):
+		gm_user = self.instance
+		gm_user.is_active = False
+		return super().save(commit)
+
+	def deactivate(self, req):
+		gm = req.user
+		GmLog.save_log_logout(gm)
+		GmLog.save_log_deactivate(gm)
+		logout(req)
+pass

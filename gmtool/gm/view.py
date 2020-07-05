@@ -4,6 +4,7 @@ from gmtool.gm.form import *
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+
 TEMPLATE_ROOT = 'gmtool/gm'
 
 def render_gm(req, template_name:str='', context:dict={}):
@@ -11,6 +12,8 @@ def render_gm(req, template_name:str='', context:dict={}):
 
 @login_required
 def gm_logout(req):
+    from gmtool.log.model import GmLog
+    GmLog.save_log_logout(req.user)
     logout(req)
     return redirect(reverse('gmtool:index'))
 
@@ -101,3 +104,6 @@ def gm_reset_pw_done(req):
     context = {}
     context['reset_done'] = True
     return render_gm(req, 'forgot_password.html', context)
+pass
+
+

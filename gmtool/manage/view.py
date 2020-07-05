@@ -142,3 +142,18 @@ class GmPermListView(generic.edit.FormMixin, generic.ListView):
 
 pass
 
+
+class GmDeactivateView(generic.UpdateView):
+    model = User
+    context_object_name = 'gm_user'
+    template_name = f'{MANAGE_ROOT}/gm_user_deactivate.html'
+
+    paginate_by = 10
+
+    success_url = reverse_lazy('gmtool:index')
+    form_class = GmDeactivateForm
+
+    def form_valid(self, form):
+        "id, password 확인 후 실제 로그아웃, 로그처리 담당."
+        form.deactivate(self.request)
+        return super().form_valid(form)

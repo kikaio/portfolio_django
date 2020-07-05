@@ -142,6 +142,8 @@ class GmLoginForm(forms.Form):
         return email
 
     def login(self,  request):
+        from gmtool.log.model import GmLog
+
         email = self.cleaned_data['email']
         pw = self.cleaned_data['password']
         gm = authenticate(request, email=email, password=pw)
@@ -149,6 +151,7 @@ class GmLoginForm(forms.Form):
             return False
         else :
             login(request, gm)
+            GmLog.save_log_login(request.user)
             return True
 
 

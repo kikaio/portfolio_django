@@ -27,3 +27,4 @@ static/gmtool/
 gmtool/gm/__pycache__/form.cpython-38.pyc
 gmtool/manage/__pycache__/
 gmtool/templatetags/__pycache__/
+gmtool/log/__pycache__/

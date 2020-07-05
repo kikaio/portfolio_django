@@ -2,6 +2,9 @@ from django.shortcuts import render
 
 from gmtool.gm.view import *
 from gmtool.manage.view import *
+from gmtool.log.view import *
+
+
 
 # Create your views here.
 

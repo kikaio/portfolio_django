@@ -1,0 +1,203 @@
+{% extends 'gmtool/base.html' %}
+
+{% block contents %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css'%}">
+<div style="display: table-row;">
+	<div class="main">
+		{% if form %}
+		<h2>Search Log</h2>
+		<div>
+			<ul>
+			<form action="" method="POST">
+				{% csrf_token %}
+				<table border="1">
+				{{form.as_table}}
+				</table>
+                <br>
+				<input type="submit" name="" value="search">
+			</form>
+			</ul>
+		</div>
+		{% endif %}
+		<div class="active">
+			<h1>
+				GmUserLogList
+			</h1>
+			<ul>
+			<table border="1">
+				<thead>
+					<th>when-(UTC)</th>
+					<th>Who</th>
+					<th>Where</th>
+					<th>What</th>
+					<th>How</th>
+					<th>Desc</th>
+				</thead>
+				{% if log_list%}
+				<tbody>
+				{% for log in log_list%}
+					<tr>
+						<td>{{log.date_logged|date:'Y-m-d H-i-s'}}</td>
+						<td>{{log.gm}}</td>
+						<td>{{log.get_str_where}}</td>
+						<td>{{log.get_str_what}}</td>
+						<td>{{log.get_str_how}}</td>
+						<td>{{log.desc}}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+				<tfoot>
+				</tfoot>
+				{% else %}
+				<tfoot>
+				</tfoot>
+				{% endif %}
+			</table>
+			{% include "gmtool/paginationbar.html"%}
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var opts_where = document.getElementById("id_where");
+	var opts_what = document.getElementById("id_what");
+	var opts_how = document.getElementById("id_how");
+
+	var default_opt = {{form.get_default_choices_str|safe}};
+	var where_opt = {{form.get_where_tuple_list|safe}};
+
+	var gm_account_what = {{form.get_gm_account_what|safe}};
+	var gm_account_sign_how = {{form.get_gm_account_sign_how|safe}};
+	var gm_account_pw_how = {{form.get_gm_account_password_how|safe}};
+
+	var gm_manage_what = {{form.get_gm_manage_what|safe}};
+	var gm_manage_permission_how = {{form.get_gm_manage_permission_how|safe}};
+
+	$(".dormant").click(function(){
+		var curtable = $(this).find(".subdormant")
+		if(curtable.is(":visible"))
+			curtable.slideUp();
+		else
+			curtable.slideDown();
+	})
+
+	$(".active").click(function(){
+		var curtable = $(this).find(".subactive")
+		if(curtable.is(":visible"))
+			curtable.slideUp();
+		else
+			curtable.slideDown();
+	})
+
+
+	setWhereVals = function(vals)
+	{
+		vals.forEach(function(ele, idx, arr)
+		{
+			var newOp = document.createElement("option");
+			newOp.value = idx;
+			newOp.text = ele;
+			opts_where.add(newOp);
+		})
+	}
+
+	setWhatVals = function(vals)
+	{
+		console.log("setWhat called");
+		opts_what.length = 0;
+		vals.forEach(function(ele, idx, arr)
+		{
+			console.log("new option add");
+			var newOp = document.createElement("option");
+			newOp.value = idx;
+			newOp.text = ele;
+			opts_what.add(newOp);
+		})
+	}
+
+	setHowVals = function(vals)
+	{
+		opts_how.length = 0;
+		vals.forEach(function(ele, idx, arr)
+		{
+			var newOp = document.createElement("option");
+			newOp.value = idx;
+			newOp.text = ele;
+			opts_how.add(newOp);
+		})
+	}
+
+
+	whereSelectedFunc = function(curWhere)
+	{
+		switch(Number(curWhere))
+		{
+			case 1: //gm_Account
+				setWhatVals(gm_account_what);
+				setHowVals(default_opt);
+				break;
+			case 2: //gm_manage
+				setWhatVals(gm_manage_what);
+				setHowVals(default_opt);
+				break;
+			default:
+				setWhatVals(default_opt);
+				setHowVals(default_opt);
+				break;
+		}
+	}
+
+
+	whatSelectedFunc = function(val)
+	{
+		var curWhere = Number(opts_where.value);
+		var curWhat = Number(val);
+
+		opts_how.length = 0;
+
+		switch(curWhere)
+		{
+			case 1:
+			{
+				switch(curWhat)
+				{
+					case 1:
+						setHowVals(gm_account_sign_how);
+					break;
+					case 2:
+						setHowVals(gm_account_pw_how);
+					break;
+					default:
+						setHowVals(default_opt);
+					break;
+				}
+			}
+			break;
+			case 2:
+			{
+				switch(curWhat)
+				{
+					case 1:
+						setHowVals(gm_manage_permission_how);
+					break;
+					default:
+						setHowVals(default_opt);
+					break;
+				}
+			}
+			break;
+			default:
+				setWhatVals(default_opt);
+				setHowVals(default_opt);
+			break;
+		}
+	}
+
+	howSelectedFunc = function(val)
+	{
+	}
+</script>
+
+{% endblock %}

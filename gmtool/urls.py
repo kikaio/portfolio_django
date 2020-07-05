@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('gm-login', views.gm_login, name='gm-login'),
     path('gm-logout', views.gm_logout, name='gm-logout'),
+    path('gm-deactivate', views.GmDeactivateView.as_view(), name='gm-deactivate'),
     path('gm-change-pw', views.gm_change_pw, name='gm-change-pw'),
     path('gm-register', views.gm_register, name='gm-register'),
     path('gm-reset-pw', views.gm_reset_pw, name='gm-reset-pw'),
@@ -28,4 +29,8 @@ urlpatterns +=[
     path('gm-perm-list', views.GmPermListView.as_view(), name='gm-perm-list'),
     path('gm-perm/<int:pk>/create', views.GmPermListView.as_view(), name='gm-perm-create'),
     path('gm-perm/<int:gm_pk>/<int:perm_pk>/delete', views.delete_gm_perm, name='gm-perm-delete'),
+]
+
+urlpatterns +=[
+    path('gm-log-list', views.GmLogList.as_view(), name='gm-log-list'),
 ]
