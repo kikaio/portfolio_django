@@ -153,6 +153,10 @@ STATICFILES_DIRS = [
 ]
 
 
+# 세션 live 시간. 추후 test 환경에선 1시간으로 늘릴것.
+SESSION_COOKIE_AGE = 60 * 15 # 15분으로 설정
+SESSION_SAVE_EVERY_REQUEST = False
+
 ######################## media 관련
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
