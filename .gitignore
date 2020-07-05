@@ -28,3 +28,6 @@ gmtool/gm/__pycache__/form.cpython-38.pyc
 gmtool/manage/__pycache__/
 gmtool/templatetags/__pycache__/
 gmtool/log/__pycache__/
+gmtool/files/__pycache__/model.cpython-38.pyc
+gmtool/files/__pycache__/form.cpython-38.pyc
+gmtool/files/__pycache__/view.cpython-38.pyc
