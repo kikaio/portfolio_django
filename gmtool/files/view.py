@@ -1,5 +1,5 @@
 from gmtool.files.form import *
-
+from django.utils.translation import ugettext_lazy as _
 
 from django.shortcuts import render, reverse, redirect
 from django.views import generic
