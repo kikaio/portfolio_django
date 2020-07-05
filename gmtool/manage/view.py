@@ -146,7 +146,7 @@ pass
 class GmDeactivateView(generic.UpdateView):
     model = User
     context_object_name = 'gm_user'
-    template_name = f'{MANAGE_ROOT}/gm_user_deactivate.html'
+    template_name = f'{MANAGE_ROOT}/gm_deactivate.html'
 
     paginate_by = 10
 

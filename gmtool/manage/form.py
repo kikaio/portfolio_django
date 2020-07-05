@@ -150,7 +150,7 @@ class GmDeactivateForm(forms.ModelForm):
 		cur_gm_email = self.cleaned_data.get('email')
 		if (cur_gm_email is None) or (cur_gm_email==''):
 			raise forms.ValidationError(_('cur_user is not exist'))
-		cur_user = self.authenticate(email=cur_gm_email, password=pw)
+		cur_user = authenticate(email=cur_gm_email, password=pw)
 		if cur_user is None:
 			raise forms.ValidationError(_('password is incollect'))
 		return cur_user.password

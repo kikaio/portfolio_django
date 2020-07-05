@@ -1,0 +1,20 @@
+{% extends "gmtool/base.html" %}
+{%block contents%}
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css' %}">
+
+<div style="display: table-row;">
+	<div class="main">
+		<h2>Deactivate</h2>
+		{% if form %}
+		<form method="POST" action="">
+			{% csrf_token%}
+			<table border="1">
+			{{form.as_table}}
+			</table>
+			<input type="submit" name="" value="Do Deactivate">
+		</form>
+		{% endif %}
+	</div>
+</div>
+{%endblock%}
