@@ -1,0 +1,40 @@
+{% extends "gmtool/base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css'%}">
+
+{% block contents %}
+<div style="display: table-row;">
+	<div class="main">
+		<h2>Uploaded file list</h2>
+		{% if file_list %}
+		<h3>File List</h3>
+		<table border="1">
+			<thead>
+				<th>File Title</th>
+				<th>File Url</th>
+				{% if perms.blog.delete_fileuploadmodel %}
+				<th>Do Delete</th>
+				{% endif %}
+			</thead>
+			<tbody>
+				{% for file_data in file_list %}
+				<tr>
+					<td>
+						<a href="{{file_data.file.url}}">{{file_data.title}}</a>
+					</td>
+					<td>{{file_data.file.url}}</td>
+					{% if perms.blog.delete_fileuploadmodel %}
+					<td>
+						<button type="button" onclick="location.href='{% url 'blog:file-delete' file_data.id%}' ">Delete This File</button>
+					</td>
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+		<h3>There is no files</h3>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

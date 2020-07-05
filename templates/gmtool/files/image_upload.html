@@ -1,0 +1,27 @@
+{% extends "gmtool/base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css'%}">
+
+{% block contents %}
+<div style="display: table-row;">
+	<div class="main">
+		<div>
+			<h2>Image upload</h2>
+			{% if perms.blog.add_imageuploadmodel %}
+			<form accept="" method="POST" enctype="multipart/form-data" novalidate>
+				{% csrf_token %}
+				{{form.as_p}}
+				<button type="submit">upload</button>
+			</form>
+			{% if msg %}
+			<div>
+				<p>{{msg}}</p>
+			</div>
+			{% endif %}
+			{% else %}
+			<h3>관련 권한이 없습니다.</h3>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

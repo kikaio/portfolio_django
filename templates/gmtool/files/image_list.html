@@ -1,0 +1,44 @@
+{% extends "gmtool/base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'main.css'%}">
+
+
+{% block contents %}
+<div style="display: table-row;">
+	<div class="main">
+		<h2>Uploaded image list</h2>
+		{% if img_list %}
+		<h3>Image List</h3>
+		 <table border="1">
+		 	<thead>
+		 		<th>Thumdnail</th>
+		 		<th>Url</th>
+		 		{% if perms.blog.delete_imageuploadmodel %}
+		 		<th>Do Delete</th>
+		 		{% endif %}
+		 	</thead>
+		 	<tbody>
+				{% for img in img_list %}
+ 				{% if img.file %}
+		 		<tr>
+		 			<td>
+						{% load imagekit %}
+			 			{% thumbnail "100x100" img.file %}
+		 			</td>
+		 			<td>{{img.file.url}}</td>
+		 			{% if perms.blog.delete_imageuploadmodel %}
+		 			<td>
+		 				<button type="button" onclick="location.href='{% url 'blog:image-delete' img.id %}'">Delete</button>
+		 			</td>
+		 			{% endif %}
+		 		</tr>
+ 				{% endif %}
+				{% endfor %}
+		 	</tbody>
+		 </table>
+		{% else %}
+		<h3>There is no images</h3>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

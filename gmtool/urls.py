@@ -34,3 +34,13 @@ urlpatterns +=[
 urlpatterns +=[
     path('gm-log-list', views.GmLogList.as_view(), name='gm-log-list'),
 ]
+
+
+urlpatterns += [
+	path('file/upload/', views.file_upload, name='file-upload'),
+	path('image/upload/', views.image_upload, name='image-upload'),
+	path('file-list/', views.FileUploadedListView.as_view(), name='file-list'),
+	path('image-list/', views.ImageUploadedListView.as_view(), name='image-list'),
+	path('file/<int:pk>/delte/', views.FileUploadedListView.delete, name='file-delete'),
+	path('image/<int:pk>/delete/', views.ImageUploadedListView.delete, name='image-delete'),
+]
