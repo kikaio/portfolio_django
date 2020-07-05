@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'imagekit',
     'gateway',
     'gmtool',
 ]
@@ -152,3 +153,6 @@ STATICFILES_DIRS = [
 ]
 
 
+######################## media 관련
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
