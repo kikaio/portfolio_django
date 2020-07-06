@@ -1,4 +1,3 @@
-
 from gmtool.manage.model import *
 from gmtool.manage.form import *
 
@@ -10,17 +9,19 @@ from django.urls import reverse_lazy
 
 from django.views import generic
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 User = get_user_model()
 
 MANAGE_ROOT = 'gmtool/manage'
 
-def render_manage(req, template_name, context:dict={}):
+
+def render_manage(req, template_name, context: dict = {}):
     return render(req, f'{MANAGE_ROOT}/{template_name}', context)
 
 
 def gm_list(req):
-    context={}
+    context = {}
     choices = [
         'email',
     ]
@@ -35,7 +36,7 @@ def gm_list(req):
         context['choice_field'] = req.POST['choice_field']
         context['choice_selected'] = req.POST['choice_field']
         gm_user_list = []
-        if(context['search_text'] == ''):
+        if (context['search_text'] == ''):
             gm_user_list = User.objects.all()
         else:
             q = None
@@ -46,18 +47,27 @@ def gm_list(req):
         context['gm_user_list'] = gm_user_list
     return render_manage(req, 'gm_user_list.html', context)
 
-class GmUserDetailView(generic.DetailView):
-	model = User
-	context_object_name = 'gm_user'
-	template_name = f'{MANAGE_ROOT}/gm_user_detail.html'
 
-	def get_object(self):
-		data = get_object_or_404(self.model, id=self.kwargs['pk'])
-		return data
+class GmUserDetailView(LoginRequiredMixin, generic.DetailView):
+    login_url = reverse_lazy('gmtool:gm-login')
+    redirect_field_name = 'redirect_to'
+
+    model = User
+    context_object_name = 'gm_user'
+    template_name = f'{MANAGE_ROOT}/gm_user_detail.html'
+
+    def get_object(self):
+        data = get_object_or_404(self.model, id=self.kwargs['pk'])
+        return data
+
+
 pass
 
 
-class GmUserUpdateView(generic.UpdateView):
+class GmUserUpdateView(LoginRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('gmtool:gm-login')
+    redirect_field_name = 'redirect_to'
+
     model = User
     context_object_name = 'gm_user'
     template_name = f'{MANAGE_ROOT}/gm_user_update.html'
@@ -69,22 +79,25 @@ class GmUserUpdateView(generic.UpdateView):
 def gm_perm_list(req):
     return redirect(reverse('gmtool:index'))
 
+
 def delete_gm_perm(req, gm_pk, perm_pk):
-	gm = User.objects.get(id=gm_pk)
-	if gm is not None:
-		perm = Permission.objects.get(id=perm_pk)
-		if perm is not None:
-			gm.user_permissions.remove(perm)
-	return redirect('gmtool:gm-perm-list')
+    gm = User.objects.get(id=gm_pk)
+    if gm is not None:
+        perm = Permission.objects.get(id=perm_pk)
+        if perm is not None:
+            gm.user_permissions.remove(perm)
+    return redirect('gmtool:gm-perm-list')
+
 
 def perm_delete(request, pk=0):
     Permission.objects.filter(id__exact=pk).delete()
     return redirect('gmtool:perm-list')
 
+
 class PermList(generic.ListView):
     model = Permission
     context_object_name = 'perm_code_list'
-    template_name =  f'{MANAGE_ROOT}/perm_list.html'
+    template_name = f'{MANAGE_ROOT}/perm_list.html'
     ordering = ['content_type_id', 'id']
     pass
 
@@ -99,10 +112,14 @@ class PermCreate(generic.FormView):
     def form_valid(sefl, form):
         form.save()
         return super().form_valid(form)
+
+
 pass
 
 
-class GmPermListView(generic.edit.FormMixin, generic.ListView):
+class GmPermListView(generic.edit.FormMixin, generic.ListView, LoginRequiredMixin):
+    login_url = reverse_lazy('gmtool:gm-login')
+    redirect_field_name = 'redirect_to'
 
     paginate_by = 10
     """docstring for GmPermListView"ListView"""
@@ -140,10 +157,14 @@ class GmPermListView(generic.edit.FormMixin, generic.ListView):
         form.add_perm_to_user()
         return super().form_valid(form)
 
+
 pass
 
 
-class GmDeactivateView(generic.UpdateView):
+class GmDeactivateView(LoginRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('gmtool:gm-login')
+    redirect_field_name = 'redirect_to'
+
     model = User
     context_object_name = 'gm_user'
     template_name = f'{MANAGE_ROOT}/gm_deactivate.html'
