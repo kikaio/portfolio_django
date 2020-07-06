@@ -136,12 +136,21 @@ class GmDeactivateForm(forms.ModelForm):
 		disabled = True,
 		label = _('Email'),
 	)
-
 	password = forms.CharField(
 		widget = forms.PasswordInput,
 		initial = '',
 	)
 
+	email.widget.attrs.update({
+		"class": "form-control form-control-user",
+		"aria-describedby": "emailHelp",
+		"placeholder": "Enter Email Address...",
+	})
+
+	password.widget.attrs.update({
+		"class": "form-control form-control-user",
+		"placeholder": "Password",
+	})
 
 	def clean_password(self):
 		pw = self.cleaned_data.get('password')

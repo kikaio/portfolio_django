@@ -13,7 +13,7 @@
 		 	<thead>
 		 		<th>Thumdnail</th>
 		 		<th>Url</th>
-		 		{% if perms.blog.delete_imageuploadmodel %}
+		 		{% if perms.gmtool.delete_imageuploadmodel %}
 		 		<th>Do Delete</th>
 		 		{% endif %}
 		 	</thead>
@@ -26,7 +26,7 @@
 			 			{% thumbnail "100x100" img.file %}
 		 			</td>
 		 			<td>{{img.file.url}}</td>
-		 			{% if perms.blog.delete_imageuploadmodel %}
+		 			{% if perms.gmtool.delete_imageuploadmodel %}
 		 			<td>
 		 				<button type="button" onclick="location.href='{% url 'blog:image-delete' img.id %}'">Delete</button>
 		 			</td>

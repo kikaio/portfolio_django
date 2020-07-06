@@ -7,7 +7,7 @@
 	<div class="main">
 		<div>
 			<h2>Image upload</h2>
-			{% if perms.blog.add_imageuploadmodel %}
+			{% if perms.gmtool.add_imageuploadmodel %}
 			<form accept="" method="POST" enctype="multipart/form-data" novalidate>
 				{% csrf_token %}
 				{{form.as_p}}

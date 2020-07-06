@@ -7,8 +7,8 @@
 
 <div style="display: table-row;">
 	<div class="main">
-		<div>
 		{% if form %}
+		<div>
 			<h1>Permission add to gm</h1>
 			<ul>
 			<form accept="" method="post">
@@ -19,10 +19,9 @@
 				<input type="submit" name="" value = "add">
 			</form>
 			</ul>
-		{% endif %}				
 		</div>
+		{% endif %}
 		<div>
-			<h1>Gm's Permission List</h1>
 			{% if object_list and gm_perm_dic %}
 			<ul >
 				{% for user in object_list %}

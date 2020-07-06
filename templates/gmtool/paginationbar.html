@@ -1,20 +1,69 @@
-
 {% block pagination %}
-	{% if is_paginated %}
-	<div class="pagination">
-		<span class="page-links">
-			{% if page_obj.has_previous %}
-				<a href="{{request.path}}?page={{page_obj.previous_page_number}}">
-					prev
-				</a>
-			{% endif %}
-			<span class="page-current">
-				<p> Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}.</p>
-			</span>
-			{% if page_obj.has_next %}
-			<a href="{{request.path}}?page={{page_obj.next_page_number}}">next</a>
-			{% endif %}
-		</span>
-	</div>
-	{% endif %}
+<!--	{% if is_paginated %}-->
+<!--	<div class="pagination">-->
+<!--		<span class="page-links">-->
+<!--			{% if page_obj.has_previous %}-->
+<!--				<a href="{{request.path}}?page={{page_obj.previous_page_number}}">-->
+<!--					prev-->
+<!--				</a>-->
+<!--			{% endif %}-->
+<!--			<span class="page-current">-->
+<!--				<p> Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}.</p>-->
+<!--			</span>-->
+<!--			{% if page_obj.has_next %}-->
+<!--			<a href="{{request.path}}?page={{page_obj.next_page_number}}">next</a>-->
+<!--			{% endif %}-->
+<!--		</span>-->
+<!--	</div>-->
+<!--	{% endif %}-->
+{%if is_paginated%}
+<div class="row pagination pagination">
+    <div class="col-sm-12 col-md-5">
+        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+            Showing {{page_obj.number}} of {{page_obj.paginator.num_pages}} entries
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-7">
+        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+            <ul class="pagination page-links">
+				{% if page_obj.has_previous %}
+                <li class="paginate_button page-item previous disabled" id="dataTable_previous">
+                    <a href="{{request.path}}?page={{page_obj.previous_page_number}}" aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+                       class="page-link">Prev</a>
+                </li>
+				{% endif %}
+                <li class="paginate_button page-item active">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+                       class="page-link">1</a>
+                </li>
+                <li class="paginate_button page-item ">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0"
+                       class="page-link">2</a>
+                </li>
+                <li class="paginate_button page-item ">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0"
+                       class="page-link">3</a>
+                </li>
+                <li class="paginate_button page-item ">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0"
+                       class="page-link">4</a>
+                </li>
+                <li class="paginate_button page-item ">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0"
+                       class="page-link">5</a>
+                </li>
+                <li class="paginate_button page-item ">
+                    <a href="#" aria-controls="dataTable" data-dt-idx="6" tabindex="0"
+                       class="page-link">6</a>
+                </li>
+				{% if page_obj.has_next %}
+                <li class="paginate_button page-item next" id="dataTable_next">
+                    <a href="{{request.path}}?page={{page_obj.next_page_number}}" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                </li>
+				{%endif%}
+            </ul>
+        </div>
+    </div>
+</div>
+{%endif%}
 {% endblock %}
