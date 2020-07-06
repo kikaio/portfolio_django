@@ -91,6 +91,16 @@ class GmLog(models.Model):
                      )
 
     @classmethod
+    def save_log_change_pw(cls, gm):
+        log = cls()
+        log.save_log(who=gm,
+                     where=LogCategoryEnum.GM_ACCOUNT.value,
+                     what=LogGmAccountEnumWhat.PASSWORD.value,
+                     how= LogGmAccountEnumHowPwGmAccount.PW_CHANGE.value,
+                     )
+        pass
+
+    @classmethod
     def save_log_logout(cls, gm):
         log = cls()
         log.save_log(who=gm,

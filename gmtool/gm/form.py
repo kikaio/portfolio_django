@@ -193,9 +193,11 @@ class GmChangePwForm(forms.ModelForm):
         return new_pw
 
     def save(self, commit=True):
+        from gmtool.log.model import GmLog
         gm = self.request.user
         new_pw = self.cleaned_data['new_pw']
         gm.set_password(new_pw)
+        GmLog.save_log_change_pw(gm)
         gm.save()
         login(self.request, gm)
     pass
