@@ -6,12 +6,15 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 class FileUploadModel(models.Model):
-	title = models.CharField(max_length = 100)
-	file = models.FileField(null=True)
 
-	def delete(self, *args, **kwargs):
-		os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
-		super().delete(*args, **kwargs)
+    title = models.CharField(max_length = 100)
+    file = models.FileField(null=True)
+
+    def delete(self, *args, **kwargs):
+        file_path =os.path.join(settings.MEDIA_ROOT, self.file.path)
+        os.remove(file_path)
+        super().delete(*args, **kwargs)
+pass
 
 
 #pip install pillow, pilkit, django-imagekit
