@@ -3,38 +3,62 @@
 <link rel="stylesheet" href="{% static 'main.css'%}">
 
 {% block contents %}
-<div style="display: table-row;">
-	<div class="main">
-		<h2>Uploaded file list</h2>
-		{% if file_list %}
-		<h3>File List</h3>
-		<table border="1">
-			<thead>
-				<th>File Title</th>
-				<th>File Url</th>
-				{% if perms.gmtool.delete_fileuploadmodel %}
-				<th>Do Delete</th>
-				{% endif %}
-			</thead>
-			<tbody>
-				{% for file_data in file_list %}
-				<tr>
-					<td>
-						<a href="{{file_data.file.url}}">{{file_data.title}}</a>
-					</td>
-					<td>{{file_data.file.url}}</td>
-					{% if perms.gmtool.delete_fileuploadmodel %}
-					<td>
-						<button type="button" onclick="location.href='{% url 'blog:file-delete' file_data.id%}' ">Delete This File</button>
-					</td>
-					{% endif %}
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-		{% else %}
-		<h3>There is no files</h3>
-		{% endif %}
-	</div>
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Uploaded file list</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="active">
+                <ul class="subactive">
+                    <table class="table table-bordered dataTable" id="activeTable" width="100%"
+                           cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                           style="width: 100%;">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-sort="ascending"
+                                aria-label="Name: activate to sort column descending" style="width: 250px;">
+                                File Title
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Position: activate to sort column ascending"
+                                style="width: 221px;">
+								File Url
+                            </th>
+							{% if user.is_superuser or perms.gmtool.delete_fileuploadmodel %}
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">
+								Do Delete
+                            </th>
+							{% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+						{% for file_data in file_list %}
+						<tr>
+							<td>
+								<a href="{{file_data.file.url}}">{{file_data.title}}</a>
+							</td>
+							<td>{{file_data.file.url}}</td>
+							{% if user.is_superuser or perms.gmtool.delete_fileuploadmodel %}
+							<td>
+								<button type="button" onclick="location.href='{% url 'blog:file-delete' file_data.id%}' ">Delete This File</button>
+							</td>
+							{% endif %}
+						</tr>
+						{% endfor %}
+                        </tbody>
+                    </table>
+					{% include "gmtool/paginationbar.html"%}
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}

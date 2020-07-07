@@ -3,25 +3,46 @@
 <link rel="stylesheet" href="{% static 'main.css'%}">
 
 {% block contents %}
-<div style="display: table-row;">
-	<div class="main">
-		<div>
-			<h2>Image upload</h2>
-			{% if perms.gmtool.add_imageuploadmodel %}
-			<form accept="" method="POST" enctype="multipart/form-data" novalidate>
-				{% csrf_token %}
-				{{form.as_p}}
-				<button type="submit">upload</button>
-			</form>
-			{% if msg %}
-			<div>
-				<p>{{msg}}</p>
-			</div>
-			{% endif %}
-			{% else %}
-			<h3>관련 권한이 없습니다.</h3>
-			{% endif %}
-		</div>
-	</div>
+
+
+{% if user.is_superuser or not perms.gmtool.add_imageuploadmodel %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Image upload</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="active">
+                <ul class="subactive">
+                    {% if form %}
+                    <form accept="" method="POST" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div id="dataTable_filter" class="dataTables_filter">
+                            <label>
+                                File&nbsp;:&nbsp;{{form.file}}&nbsp;
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-check fa-sm"></i>
+                                    Upload
+                                </button>
+                            </label>
+                        </div>
+                    </form>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+{% else %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">add_imageuploadmodel 권한이 없습니다 권한을 획득하거나 관리자에게 문의하세요. </h6>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}

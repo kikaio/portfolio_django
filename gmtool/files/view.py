@@ -51,7 +51,7 @@ class FileUploadedListView(generic.ListView):
 
     @classmethod
     def delete(cls, req, pk):
-        if not req.user.is_superuser() and not req.user.has_perm('gmtool.delete_fileuploadmodel'):
+        if not req.user.is_superuser and not req.user.has_perm('gmtool.delete_fileuploadmodel'):
             return redirect('gmtool:index')
 
         target = cls.model.objects.get(id=pk)
@@ -68,7 +68,7 @@ class ImageUploadedListView(generic.ListView):
 
     @classmethod
     def delete(cls, req, pk):
-        if not req.user.is_superuser() and not req.user.has_perm('gmtool.delete_imageuploadmodel'):
+        if not req.user.is_superuser and not req.user.has_perm('gmtool.delete_imageuploadmodel'):
             return redirect('gmtool:index')
 
         target = cls.model.objects.get(id=pk)

@@ -23,7 +23,7 @@ class ImageUploadModel(models.Model):
     pillow, pilkit, django-imagekit 이 필요.
     """
 
-    file = models.ImageField(null = True, blank = True, default='', upload_to='blogs/images/')
+    file = models.ImageField(null = True, blank = True, default='', upload_to='gmtool/')
     thumbnail = ImageSpecField(
         source = 'file', # 원본 image file 의 field 명
         processors = [ResizeToFill(100, 100)], #사이즈 설정.

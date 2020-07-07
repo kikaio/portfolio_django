@@ -1,44 +1,66 @@
 {% extends "gmtool/base.html" %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'main.css'%}">
-
 
 {% block contents %}
-<div style="display: table-row;">
-	<div class="main">
-		<h2>Uploaded image list</h2>
-		{% if img_list %}
-		<h3>Image List</h3>
-		 <table border="1">
-		 	<thead>
-		 		<th>Thumdnail</th>
-		 		<th>Url</th>
-		 		{% if perms.gmtool.delete_imageuploadmodel %}
-		 		<th>Do Delete</th>
-		 		{% endif %}
-		 	</thead>
-		 	<tbody>
-				{% for img in img_list %}
- 				{% if img.file %}
-		 		<tr>
-		 			<td>
-						{% load imagekit %}
-			 			{% thumbnail "100x100" img.file %}
-		 			</td>
-		 			<td>{{img.file.url}}</td>
-		 			{% if perms.gmtool.delete_imageuploadmodel %}
-		 			<td>
-		 				<button type="button" onclick="location.href='{% url 'blog:image-delete' img.id %}'">Delete</button>
-		 			</td>
-		 			{% endif %}
-		 		</tr>
- 				{% endif %}
-				{% endfor %}
-		 	</tbody>
-		 </table>
-		{% else %}
-		<h3>There is no images</h3>
-		{% endif %}
-	</div>
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Uploaded image list</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="active">
+                <ul class="subactive">
+                    <table class="table table-bordered dataTable" id="activeTable" width="100%"
+                           cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                           style="width: 100%;">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-sort="ascending"
+                                aria-label="Name: activate to sort column descending" style="width: 100px;">
+                                Thumbnail
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Position: activate to sort column ascending"
+                                style="width: 221px;">
+								Url
+                            </th>
+							{% if user.is_superuser or perms.gmtool.delete_imageuploadmodel %}
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">
+								Do Delete
+                            </th>
+							{% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+						{% for img in img_list %}
+						{% if img.file %}
+						<tr>
+							<td>
+                                <img src="{{img.file.url}}">
+								{% load imagekit %}
+                                {% thumbnail '100x100' img.file %}
+							</td>
+							<td>{{img.file.url}}</td>
+							{% if user.is_superuser or perms.gmtool.delete_imageuploadmodel %}
+							<td>
+								<button type="button" onclick="location.href='{% url 'gmtool:image-delete' img.id %}'">Delete</button>
+							</td>
+							{% endif %}
+						</tr>
+						{% endif %}
+						{% endfor %}
+                        </tbody>
+                    </table>
+					{% include "gmtool/paginationbar.html"%}
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}
