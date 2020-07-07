@@ -11,6 +11,14 @@ class FileUploadForm(forms.ModelForm):
 		super().__init__(*args, **kwargs)
 		self.fields['file'].required = False
 
+		self.fields['title'].widget.attrs.update({
+			"class": "form-control-sm",
+		})
+		self.fields['file'].widget.attrs.update({
+
+		})
+		pass
+
 
 #pip install pillow
 class ImageUploadForm(forms.ModelForm):
