@@ -4,56 +4,75 @@
 {% load static %}
 
 {% block contents %}
-<link rel="stylesheet" href="{% static 'main.css'%}">
 
-<div style="display: table-row;">
-	<div class="main">
-		<h2>Gm Detail</h2>
-		{% if gm_user%}
-		<ul>
-			<table border="1">
-				<tr>
-				<th><label>email</label></th>
-				<td>{{gm_user.email}}</td>
-				</tr>
-				<tr></tr>
-				<th>fullName</th>
-				<td>{{gm_user.fullName}}</td>
-				<tr>
-				<th>department</th>
-				<td>{{gm_user.department}}</td>
-				</tr>
-				<tr>
-				<th>is_active</th>
-				<td>{{gm_user.is_active}}</td>
-				</tr>
-				<tr>
-				<th>is_superuser</th>
-				<td>{{gm_user.is_superuser}}</td>
-				</tr>
-				<tr>
-				<th>is_locked</th>
-				<td>{{gm_user.is_locked}}</td>
-				</tr>
-				<tr>
-				<th>date_regist</th>
-				<td>{{gm_user.date_regist}}</td>
-				</tr>
-				<tr>
-				<th>date_locked</th>
-				<td>{{gm_user.date_locked}}</td>
-				</tr>
-				<tr>
-				<th>date_expired_pw</th>
-				<td>{{gm_user.date_expired_pw}}</td>
-				</tr>
-			</table>
-			<button type="button" onclick="location.href='{% url 'gmtool:gm-user-update' gm_user.id%}'">Edit</button>
-		</ul>
-		{% endif %}
-		<div>
-			<p>generic.detailView 를 사용했습니다</p>
-		</div>
-	</div>
+{% if gm_user%}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+					Gm Detail &nbsp;&nbsp;
+					<button class="btn btn-primary btn-icon-split btn-sm"
+						onclick="location.href='{% url 'gmtool:gm-user-update' gm_user.id%}'"
+						type="button" >
+						<span class="icon text-white-50">
+							<i class="fas fa-flag fa-sm"></i>
+						</span>
+						<span class="text">Edit</span>
+					</button>
+				</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="active">
+                <ul class="subactive">
+                    <table class="table table-bordered dataTable" id="activeTable" width="100%"
+                           cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                           style="width: 100%;">
+                        <thead>
+                        </thead>
+                        <tbody>
+
+
+						<tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-sort="ascending" scope="row"
+                                aria-label="Name: activate to sort column descending" style="width: 250px;">
+                        		email
+							</th>
+                            <td>{{gm_user.email}}</td>
+                        </tr>
+						<tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-sort="ascending"
+                                aria-label="Name: activate to sort column descending" style="width: 250px;">
+                        		is_active
+							</th>
+                            <td>{{gm_user.is_active}}</td>
+                        </tr>
+						<tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-sort="ascending"
+                                aria-label="Name: activate to sort column descending" style="width: 250px;">
+                        		is_superuser
+							</th>
+                            <td>{{gm_user.is_superuser}}</td>
+                        </tr>
+						<tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-sort="ascending"
+                                aria-label="Name: activate to sort column descending" style="width: 250px;">
+                        		last_login
+							</th>
+                            <td>{{gm_user.last_login}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+{%endif%}
+
 {%endblock%}
