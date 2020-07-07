@@ -72,7 +72,7 @@ class GmUserUpdateView(LoginRequiredMixin, generic.UpdateView):
     context_object_name = 'gm_user'
     template_name = f'{MANAGE_ROOT}/gm_user_update.html'
 
-    success_url = reverse_lazy('blog:gm-user-list')
+    success_url = reverse_lazy('gmtool:gm-list')
     form_class = GmUserUpdateForm
 
 
