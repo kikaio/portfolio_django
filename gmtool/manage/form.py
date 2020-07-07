@@ -61,6 +61,17 @@ class GmPermAddForm(forms.Form):
 		initial=0,
 	)
 
+	gm_choice.widget.attrs.update({
+		"aria-controls":"dataTable",
+		"class":"custom-select custom-select-sm form-control form-control-sm",
+	})
+
+	perms_choice.widget.attrs.update({
+		"aria-controls":"dataTable",
+		"class":"custom-select custom-select-sm form-control form-control-sm",
+	})
+
+
 	cur_user = None
 
 	def __init__(self, *args, **kwargs):

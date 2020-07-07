@@ -4,69 +4,115 @@
 {% load tag_gmtool %}
 
 {% block contents %}
-
-<div style="display: table-row;">
-	<div class="main">
-		{% if form %}
-		<div>
-			<h1>Permission add to gm</h1>
-			<ul>
-			<form accept="" method="post">
-				<table border="1">
-				{%csrf_token%}
-				{{form.as_table}}
-				</table>
-				<input type="submit" name="" value = "add">
-			</form>
-			</ul>
-		</div>
-		{% endif %}
-		<div>
-			{% if object_list and gm_perm_dic %}
-			<ul >
-				{% for user in object_list %}
-				{% if user.id in gm_perm_dic %}
-				{% with perm_list=gm_perm_dic|get_list_item_from_dic:user.id  %}
-				{% with perm_cnt=perm_list|get_list_item_count %}
-				<li>
-				{% if 0 < perm_cnt %}
-					<p>{{user.get_full_name}} has permission : {{perm_cnt}}</p>
-					<table border="1">
-						<thead>
-							<th>Content Type</th>
-							<th>Code</th>
-							<th>Desc</th>
-							<th>Delete</th>
-						</thead>
-						<tbody>
-							{% for user_perm in perm_list %}
-							<tr>
-								<td>{{user_perm.content_type_id}}</td>
-								<td>{{user_perm.codename}}</td>							
-								<td>{{user_perm.name}}</td>
-								<td>
-									<button type="button" onclick = "location.href='{%url 'gmtool:gm-perm-delete' user.id user_perm.id%}'">DoDelete</button>
-								</td>
-							</tr>
-							{% endfor %}
-						</tbody>
-						<tfoot>
-						</tfoot>
-					</table>
-				{% else %}
-				<p>{{user.get_full_name}} hasn't permission anything</p>
-				{% endif %}
-				{% endwith %}
-				{% endwith %}
-				</li>
-				{% endif %}
-				{% endfor %}
-			</ul>
-			{% endif %}
-		</div>
-		{% include "gmtool/paginationbar.html"%}
-	</div>
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            {% if form %}
+            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+                  method="post">
+                <div class="input-group-append">
+                    {%csrf_token%}
+                    <div id="dataTable_filter" class="dataTables_filter">
+                        <label>Perm&nbsp;{{form.perms_choice}}&nbsp;Add&nbsp;To&nbsp;{{form.gm_choice}}&nbsp;
+                            <button class="btn btn-primary btn-icon-split btn-sm" type="submit">
+ 								<span class="icon text-white-50">
+	                                <i class="fas fa-flag fa-sm"></i>
+								</span>
+                                <span class="text">Add</span>
+                            </button>
+                        </label>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
 </div>
+
+{% if object_list and gm_perm_dic %}
+{% for user in object_list %}
+{% if user.id in gm_perm_dic %}
+{% with perm_list=gm_perm_dic|get_list_item_from_dic:user.id  %}
+{% with perm_cnt=perm_list|get_list_item_count %}
+
+{% if 0 >= perm_cnt %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                {{user.get_full_name}} has permission : {{perm_cnt}}
+            </h6>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{user.get_full_name}} has permission : {{perm_cnt}}</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="gmperm">
+                <ul class="subgmperm">
+                    <table class="table table-bordered dataTable" id="dormantTable" width="100%"
+                           cellspacing="0" role="grid" aria-describedby="dormantTable_info"
+                           style="width: 100%;">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dormantTable" rowspan="1"
+                                colspan="1" aria-sort="ascending"
+                                aria-label="Name: activate to sort column descending" style="width: 250px;">
+                                Content
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Position: activate to sort column ascending"
+                                style="width: 221px;">Code
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">Desc
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">Do Delete
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for user_perm in perm_list %}
+                        <tr role="row" class="odd">
+                            <td class="sorting_1">{{user_perm.content_type_id}}</td>
+                            <td>{{user_perm.codename}}</td>
+                            <td>{{user_perm.name}}</td>
+                            <td>
+                                <a href="{%url 'gmtool:gm-perm-delete' user.id user_perm.id%}"
+                                   class="btn btn-danger btn-icon-split">
+									<span class="icon text-white-50">
+										<i class="fas fa-trash"></i>
+									</span>
+                                    <span class="text">Do Delete</span>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endwith %}
+{% endwith %}
+{% endif %}
+
+{% endfor %}
+{% endif %}
 
 {%endblock%}
 
