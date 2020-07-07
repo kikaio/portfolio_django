@@ -2,63 +2,106 @@
 
 {% block contents %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'main.css'%}">
-<div style="display: table-row;">
-	<div class="main">
-		{% if form %}
-		<h2>Search Log</h2>
-		<div>
-			<ul>
-			<form action="" method="POST">
-				{% csrf_token %}
-				<table border="1">
-				{{form.as_table}}
-				</table>
-                <br>
-				<input type="submit" name="" value="search">
-			</form>
-			</ul>
-		</div>
-		{% endif %}
-		<div class="active">
-			<h1>
-				GmUserLogList
-			</h1>
-			<ul>
-			<table border="1">
-				<thead>
-					<th>when-(UTC)</th>
-					<th>Who</th>
-					<th>Where</th>
-					<th>What</th>
-					<th>How</th>
-					<th>Desc</th>
-				</thead>
-				{% if log_list%}
-				<tbody>
-				{% for log in log_list%}
-					<tr>
-						<td>{{log.date_logged|date:'Y-m-d H-i-s'}}</td>
-						<td>{{log.gm}}</td>
-						<td>{{log.get_str_where}}</td>
-						<td>{{log.get_str_what}}</td>
-						<td>{{log.get_str_how}}</td>
-						<td>{{log.desc}}</td>
-					</tr>
-				{% endfor %}
-				</tbody>
-				<tfoot>
-				</tfoot>
-				{% else %}
-				<tfoot>
-				</tfoot>
-				{% endif %}
-			</table>
-			{% include "gmtool/paginationbar.html"%}
-			</ul>
-		</div>
-	</div>
+
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+			{%if form%}
+            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+                  method="post">
+                <div class="input-group-append">
+                    {%csrf_token%}
+                    <div id="dataTable_filter" class="dataTables_filter">
+                        <label>
+							Who&nbsp;:&nbsp;{{form.who}}&nbsp;
+							&nbsp;Where&nbsp;:&nbsp;{{form.where}}&nbsp;
+							&nbsp;What&nbsp;:&nbsp;{{form.what}}&nbsp;
+							&nbsp;How&nbsp;:&nbsp;{{form.how}}&nbsp;
+							&nbsp;From&nbsp;:&nbsp;{{form.when_from}}&nbsp;
+							&nbsp;To&nbsp;:&nbsp;{{form.when_to}}&nbsp;
+                            Desc&nbsp;:&nbsp;{{form.desc}}&nbsp;
+                            <button class="btn btn-primary" type="submit" >
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </label>
+                    </div>
+                </div>
+            </form>
+			{%endif%}
+        </div>
+    </div>
 </div>
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Active Gm List</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="active">
+                <ul class="subactive">
+                    <table class="table table-bordered dataTable" id="activeTable" width="100%"
+                           cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                           style="width: 100%;">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-sort="ascending"
+                                aria-label="Name: activate to sort column descending" style="width: 250px;">
+                                When
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Position: activate to sort column ascending"
+                                style="width: 221px;">
+								Who
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">
+								Where
+                            </th>
+							<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">
+								What
+                            </th>
+							<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">
+								How
+                            </th>
+							<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">
+								Desc
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+						{% if log_list%}
+						{% for log in log_list%}
+							<tr>
+								<td>{{log.date_logged|date:'Y-m-d H-i-s'}}</td>
+								<td>{{log.gm}}</td>
+								<td>{{log.get_str_where}}</td>
+								<td>{{log.get_str_what}}</td>
+								<td>{{log.get_str_how}}</td>
+								<td>{{log.desc}}</td>
+							</tr>
+						{% endfor %}
+						{% endif %}
+                        </tbody>
+                    </table>
+					{% include "gmtool/paginationbar.html"%}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
 	var opts_where = document.getElementById("id_where");

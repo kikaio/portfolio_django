@@ -158,45 +158,78 @@ class GmLogSearchForm(forms.Form):
         max_length=100,
         required=False
     )
+    who.widget.attrs.update({
+        "class" : "form-control bg-light border-0 small",
+        "placeholder" : "Search for...",
+        "aria-label" : "Search",
+        "aria-describedby" : "basic-addon2",
+    })
 
     where = forms.TypedChoiceField(
         coerce=int,
         choices=choices_where,
         initial=choices_where[0],
-        widget=forms.Select(attrs={'onchange': "whereSelectedFunc(this.value);"})
     )
+    where.widget.attrs.update({
+        "onchange": "whereSelectedFunc(this.value);",
+        "aria-controls" : "dataTable",
+        "class":"custom-select custom-select-sm form-control form-control-sm",
+    })
+
 
     what = forms.TypedChoiceField(
         coerce=int,
         choices=choices_init,
         initial=choices_init[0],
-        widget=forms.Select(attrs={'onchange': "whatSelectedFunc(this.value);"})
     )
+    what.widget.attrs.update({
+        "onchange": "whatSelectedFunc(this.value);",
+        "aria-controls" : "dataTable",
+        "class":"custom-select custom-select-sm form-control form-control-sm",
+    })
 
     how = forms.TypedChoiceField(
         coerce=int,
         choices=choices_init,
         initial=choices_init[0],
-        widget=forms.Select(attrs={'onchange': "howSelectedFunc(this.value);"})
     )
+
+    how.widget.attrs.update({
+        "onchange" : "howSelectedFunc(this.value);",
+        "aria-controls" : "dataTable",
+        "class":"custom-select custom-select-sm form-control form-control-sm",
+    })
 
     desc = forms.CharField(
         initial='',
         max_length=100,
         required=False
     )
+    desc.widget.attrs.update({
+        "aria-controls": "dataTable",
+        "class": "form-control form-control-sm",
+    })
+
     # todo : date time picker 적용할 것.
     when_from = forms.DateTimeField(
         required=False,
         initial=get_def_when_from,
         input_formats=["%Y-%m-%d %H:%M:%S"],
     )
+    when_from.widget.attrs.update({
+        "aria-controls": "dataTable",
+        "class": "form-control form-control-sm",
+    })
 
     when_to = forms.DateTimeField(
         required=False,
         initial=get_def_when_to,
         input_formats=["%Y-%m-%d %H:%M:%S"],
     )
+    when_to.widget.attrs.update({
+        "aria-controls": "dataTable",
+        "class": "form-control form-control-sm",
+    })
 
     def clean_where(self):
         cur_where = self.cleaned_data.get('where')
