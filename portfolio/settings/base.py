@@ -50,6 +50,8 @@ DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
+    '[::1]',
+    '.pythonanywhere.com',
 ]
 
 
