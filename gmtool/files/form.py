@@ -24,8 +24,8 @@ class FileUploadForm(forms.ModelForm):
 class ImageUploadForm(forms.ModelForm):
 	class Meta:
 		model = ImageUploadModel
-		fields = ['file']
+		fields = ['img_orig']
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.fields['file'].required = False
+		self.fields['img_orig'].required = False

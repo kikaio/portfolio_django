@@ -1,5 +1,7 @@
 {% extends "gmtool/base.html" %}
+
 {% load static %}
+{% load imagekit %}
 
 {% block contents %}
 <div class="container-fluid">
@@ -38,15 +40,14 @@
                         </thead>
                         <tbody>
 						{% for img in img_list %}
-						{% if img.file %}
+						{% if img.img_orig %}
 						<tr>
 							<td>
-                                <img src="{{img.file.url}}">
-								{% load imagekit %}
-                                {% thumbnail '100x100' img.file %}
+                                {% thumbnail '100x100' img.img_orig %}
 							</td>
-							<td>{{img.file.url}}</td>
+							<td>{{img.img_orig.url}}</td>
 							{% if user.is_superuser or perms.gmtool.delete_imageuploadmodel %}
+                            <img src="{{img.file.url}}">
 							<td>
 								<button type="button" onclick="location.href='{% url 'gmtool:image-delete' img.id %}'">Delete</button>
 							</td>
@@ -56,7 +57,6 @@
 						{% endfor %}
                         </tbody>
                     </table>
-					{% include "gmtool/paginationbar.html"%}
                 </ul>
             </div>
         </div>

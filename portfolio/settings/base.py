@@ -47,7 +47,10 @@ EMAIL_PORT = get_val_from_json(smtp_key, 'EMAIL_PORT')
 DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -140,7 +143,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
