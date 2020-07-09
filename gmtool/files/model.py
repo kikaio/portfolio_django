@@ -43,7 +43,7 @@ class ImageUploadModel(models.Model):
     # )
 
     def delete(self, *args, **kwargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.img_orig.path))
         super().delete(*args, **kwargs)
         pass
 
