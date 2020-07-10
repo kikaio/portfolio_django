@@ -33,4 +33,10 @@ class GmPlatform(models.Model):
         max_length=100,
     )
 
+    auth_state = models.IntegerField(
+        default=0,
+        null=True,
+        blank=True,
+    )
+
     pass
