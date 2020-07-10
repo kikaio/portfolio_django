@@ -16,3 +16,9 @@ class PlatformType(IntEnum):
         return ret
     pass
 
+class AuthState(IntEnum):
+    NONE = 0
+    LOGIN_REQ = auto()
+    LOGIN_COMPLETE = auto()
+    LOGIN_EXPIRED = auto()
+    pass
