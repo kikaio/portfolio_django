@@ -2,9 +2,6 @@ from django.views import generic
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
 
-from gmtool.oauth.enum import AuthState
-
-
 OAUTH_ROOT = 'gmtool/oauth'
 
 
@@ -31,9 +28,25 @@ def oauth_login_facebook(req):
     if auth_setting is None:
         return
     client_id = auth_setting['CLIENT_ID']
-    redirect_url = auth_setting['REDIRECT_URL']
-    cur_oauth_state = AuthState.LOGIN_REQ
-    login_req_url = 'https://www.facebook.com/v7.0/dialog/oauth'
-    return redirect(f'{login_req_url}?{client_id}&{redirect_url}&{cur_oauth_state}')
 
+    host_url = reverse('gmtool:index')
+    redirect_url = f"{host_url}/{auth_setting['REDIRECT_URL_NAME']}"
+
+    # 위변조 확인용.
+    cur_oauth_state = auth_setting['SECRET']
+
+    login_req_url = 'https://www.facebook.com/v7.0/dialog/oauth'
+    ret = f'{login_req_url}?client_id={client_id}&redirect_url={redirect_url}&state={cur_oauth_state}'
+    print(ret)
+    return redirect(ret)
+pass
+
+def oauth_redirect_facebook(req, state):
+    auth_setting = getattr(settings, 'FACEBOOK', None)
+    if auth_setting is None:
+        return redirect(reverse('gmtool:err-400'))
+    origin_secret = auth_setting['SECRET']
+    if origin_secret != state:
+        return redirect(reverse('gmtool:err-400'))
+    return
 pass
