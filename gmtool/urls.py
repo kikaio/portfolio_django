@@ -47,4 +47,5 @@ urlpatterns += [
 
 urlpatterns +=[
     path('oauth-login', views.oauth_login, name='oauth-login'),
+    path('oauth-login-facebook', views.oauth_login, name='oauth-login-facebook'),
 ]
