@@ -44,3 +44,7 @@ urlpatterns += [
 	path('file/<int:pk>/delte/', views.FileUploadedListView.delete, name='file-delete'),
 	path('image/<int:pk>/delete/', views.ImageUploadedListView.delete, name='image-delete'),
 ]
+
+urlpatterns +=[
+    path('oauth-login', views.oauth_login, name='oauth-login'),
+]

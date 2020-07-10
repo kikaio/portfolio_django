@@ -10,9 +10,9 @@ class PlatformType(IntEnum):
 
     @classmethod
     def ToChoices(cls):
-        ret = {}
+        ret = []
         for ele in cls:
-            ret += {ele.name : ele.value }
+            ret +=  [( ele.name , ele.value ),]
         return ret
     pass
 

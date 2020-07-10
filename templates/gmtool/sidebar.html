@@ -34,6 +34,7 @@
                 <a class="collapse-item" href="{% url 'gmtool:gm-change-pw'%}">Change Password</a>
                 {%else%}
                 <a class="collapse-item" href="{% url 'gmtool:gm-login'%}">Login</a>
+                <a class="collapse-item" href="{% url 'gmtool:oauth-login'%}">Login with OAuth</a>
                 <a class="collapse-item" href="{% url 'gmtool:gm-register'%}">Register</a>
                 <a class="collapse-item" href="{% url 'gmtool:gm-reset-pw'%}">Forgot Password</a>
                 {% endif %}

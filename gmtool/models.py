@@ -4,3 +4,4 @@ from gmtool.gm.model import *
 from gmtool.manage.model import *
 from gmtool.log.model import *
 from gmtool.files import *
+from gmtool.oauth.model import *
