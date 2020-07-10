@@ -27,7 +27,7 @@ def oauth_login_facebook(req):
     """
      facebook-OAuth2 용 로그인
     """
-    auth_setting = settings.configure('FACEBOOK', None)
+    auth_setting = getattr(settings, 'FACEBOOK', None)
     if auth_setting is None:
         return
     client_id = auth_setting['CLIENT_ID']
