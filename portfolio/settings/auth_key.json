@@ -1,0 +1,17 @@
+{
+  "FACEBOOK":{
+    "CLIENT_ID": "",
+    "CLIENT_SECRET" :"",
+    "REDIRECT_URL": ""
+  },
+  "KAKAO": {
+    "CLIENT_ID": "",
+    "CLIENT_SECRET" :"",
+    "REDIRECT_URL": ""
+  },
+  "GOOGLE": {
+    "CLIENT_ID": "",
+    "CLIENT_SECRET" :"",
+    "REDIRECT_URL": ""
+  }
+}
