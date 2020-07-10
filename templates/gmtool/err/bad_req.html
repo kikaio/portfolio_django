@@ -1,0 +1,15 @@
+{% extends "gmtool/base.html" %}
+
+{% load static %}
+
+{% block contents %}
+<div class="container-fluid">
+    <!-- 404 Error Text -->
+    <div class="text-center">
+        <div class="error mx-auto" data-text="404">400</div>
+        <p class="lead text-gray-800 mb-5">bad Request</p>
+        <p class="text-gray-500 mb-0">This Request is something wrong</p>
+        <a href="{% url 'gmtool:index'%}">← Back to Main Page</a>
+    </div>
+</div>
+{% endblock %}

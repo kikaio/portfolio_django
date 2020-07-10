@@ -5,6 +5,8 @@ from gmtool.manage.view import *
 from gmtool.log.view import *
 from gmtool.files.view import *
 from gmtool.oauth.view import *
+from gmtool.err.view import *
+
 
 # Create your views here.
 

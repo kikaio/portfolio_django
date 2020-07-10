@@ -48,4 +48,8 @@ urlpatterns += [
 urlpatterns +=[
     path('oauth-login', views.oauth_login, name='oauth-login'),
     path('oauth-login-facebook', views.oauth_login, name='oauth-login-facebook'),
+
+urlpatterns += [
+    path('err-404', views.not_found, name='err-404'),
+    path('err-400', views.bad_req, name='err-400'),
 ]
