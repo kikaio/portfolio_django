@@ -2,7 +2,8 @@
   "FACEBOOK":{
     "CLIENT_ID": "",
     "CLIENT_SECRET" :"",
-    "REDIRECT_URL": ""
+    "REDIRECT_URL_NAME": "",
+    "SECRET": ""
   },
   "KAKAO": {
     "CLIENT_ID": "",
