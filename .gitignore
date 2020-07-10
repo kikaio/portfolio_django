@@ -35,3 +35,4 @@ media/CACHE/
 media/gmtool/
 gmtool/oauth/__pycache__/
 gmtool/err/__pycache__/
+portfolio/settings/auth_key.json
