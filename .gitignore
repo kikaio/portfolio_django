@@ -34,3 +34,4 @@ gmtool/files/__pycache__/view.cpython-38.pyc
 media/CACHE/
 media/gmtool/
 gmtool/oauth/__pycache__/
+gmtool/err/__pycache__/
