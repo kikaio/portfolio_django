@@ -46,6 +46,13 @@ EMAIL_HOST_PASSWORD = get_val_from_json(smtp_key, 'EMAIL_HOST_PASSWORD')
 EMAIL_PORT = get_val_from_json(smtp_key, 'EMAIL_PORT')
 DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
 
+#OAuth 관련 설정정보.
+oauth_key = get_json_content('auth_key.json')
+# FACEBOOK OAUTH 설정값.
+FACEBOOK = get_val_from_json(oauth_key, 'FACEBOOK')
+
+
+
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
