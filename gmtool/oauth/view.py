@@ -30,13 +30,13 @@ def oauth_login_facebook(req):
     client_id = auth_setting['CLIENT_ID']
 
     host_url = reverse('gmtool:index')
-    redirect_url = f"{host_url}/{auth_setting['REDIRECT_URL_NAME']}"
+    redirect_uri = f"{host_url}/{auth_setting['REDIRECT_URL_NAME']}"
 
     # 위변조 확인용.
     cur_oauth_state = auth_setting['SECRET']
 
     login_req_url = 'https://www.facebook.com/v7.0/dialog/oauth'
-    ret = f'{login_req_url}?client_id={client_id}&redirect_url={redirect_url}&state={cur_oauth_state}'
+    ret = f'{login_req_url}?client_id={client_id}&redirect_uri={redirect_uri}&state={cur_oauth_state}'
     print(ret)
     return redirect(ret)
 pass
