@@ -67,7 +67,7 @@ def oauth_redirect_facebook(req):
     if auth_setting is None:
         return None
     client_id = auth_setting['CLIENT_ID']
-    client_secret = auth_setting['SECRET']
+    client_secret = auth_setting['CLIENT_SECRET']
     cur_url = reverse('gmtool:index') + auth_setting["REDIRECT_URL_NAME"]
     redirect_uri = f"https://{req.get_host()}{cur_url}"
     get_token_url = 'https://graph.facebook.com/v7.0/oauth/access_token'
