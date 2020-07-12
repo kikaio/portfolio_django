@@ -1,3 +1,5 @@
+from unittest.mock import _patch
+
 from django.views import generic
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
@@ -66,10 +68,26 @@ def oauth_redirect_facebook(req):
     auth_setting = getattr(settings, 'FACEBOOK', None)
     if auth_setting is None:
         return None
-    client_id = auth_setting['CLIENT_ID']
-    client_secret = auth_setting['CLIENT_SECRET']
     cur_url = reverse('gmtool:index') + auth_setting["REDIRECT_URL_NAME"]
     redirect_uri = f"https://{req.get_host()}{cur_url}"
+    ret_token_data = get_token_data(auth_setting, redirect_uri, code)
+
+    if not is_valid_access_token(auth_setting, ret_token_data['ret_token_data']):
+        pass
+
+    user_data = get_facebook_user_data(ret_token_data['ret_token_data'])
+
+    user_email = user_data['email']
+    
+
+
+    return redirect(reverse('gmtool:index'))
+    pass
+
+def get_token_data(auth_setting, redirect_uri, code):
+    "accewss_token 관련 정보를 json형식으로 받아옴. { access_token, token_type, expires_in:유효 시간{초} ]"
+    client_id = auth_setting['CLIENT_ID']
+    client_secret = auth_setting['CLIENT_SECRET']
     get_token_url = 'https://graph.facebook.com/v7.0/oauth/access_token'
     params = {
         'client_id' : client_id,
@@ -80,8 +98,34 @@ def oauth_redirect_facebook(req):
     reply = requests.get(get_token_url, params=params)
 
     print(f'oauth_code_facebook:{reply.json()}')
-    return redirect(reverse('gmtool:index'))
-    pass
+    return reply.json()
+
+def is_valid_access_token(client_id, client_secret, access_token):
+    "access_token의 유효성 검사."
+    params = {
+        'input_token':access_token,
+        'access_token' : {client_id|client_secret}
+    }
+    check_url = 'graph.facebook.com/debug_token'
+
+    ret = requests.get(check_url, params=params)
+    print(f'is_valid_access_token:{ret.json()}')
+    return ret.json()['data']['is_valid']
+
+def get_facebook_user_data(access_token):
+    "user 관련 data 획득, 필요한 data는 field에 추가."
+    need_data = ['email']
+    get_url = 'https://graph.facebook.com/me'
+    params = {
+        'fields': ','.join(need_data),
+        'access_token' : access_token
+    }
+
+    ret = requests.get(get_url, params = params)
+    return ret.json()
+
+
+
 
 def oauth_expired_facebook(req):
     return redirect(reverse('gmtool:index'))
