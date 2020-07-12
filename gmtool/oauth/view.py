@@ -158,5 +158,8 @@ def regist_or_login_facebook(req, user_email, access_token, validate_sec):
     pass
 
 
-def oauth_expired_facebook(req):
-    return redirect(reverse('gmtool:index'))
+def app_cancel_facebook(req):
+    if not req.method == 'POST':
+        return redirect(reverse('gmtool:err-400'))
+    post_data = req.POST
+    print(post_data)
