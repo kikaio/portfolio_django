@@ -1,0 +1,32 @@
+{% extends 'gmtool/base.html' %}
+
+{% load static %}
+
+{% block contents %}
+{% if google%}
+{% endif %}
+
+{% if facebook %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+    {% if error %}
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Facebook Error-{{code}}</h6>
+        </div>
+        <div class="card-body">
+            {% if desc %}
+            <p>{{desc}}</p>
+            {% endif %}
+            {% if reason %}
+            <p>{{reason}}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if kakao%}
+{% endif %}
+
+{% endblock %}

@@ -1,12 +1,14 @@
-from unittest.mock import _patch
-
-from django.views import generic
-from django.shortcuts import render, redirect, reverse
-from django.conf import settings
 import requests
-
 import json
 
+from django.shortcuts import render, redirect, reverse
+from django.conf import settings
+from django.contrib.auth import authenticate, login, get_user_model
+
+from gmtool.oauth.enum import *
+from gmtool.oauth.model import GmPlatform
+
+User = get_user_model()
 
 OAUTH_ROOT = 'gmtool/oauth'
 
@@ -20,11 +22,9 @@ def oauth_login(req):
     facebook = {
         'client_id':'',
         'redirect_url':'',
-
     }
     context['facebook'] =facebook
     return render_oauth(req, 'oauth_login.html', context)
-pass
 
 def oauth_login_facebook(req):
     """
@@ -41,25 +41,27 @@ def oauth_login_facebook(req):
     cur_oauth_state = auth_setting['SECRET']
 
     login_req_url = 'https://www.facebook.com/v7.0/dialog/oauth'
-    ret = f'{login_req_url}?client_id={client_id}&redirect_uri={redirect_uri}&state={cur_oauth_state}'
+    ret = f'{login_req_url}?client_id={client_id}&redirect_uri={redirect_uri}&state={cur_oauth_state}&scope=email'
     # response_type을 명시하지 않는경우 default로 code 값이 응답에 포함됨.
     print(ret)
     return redirect(ret)
-pass
 
 def oauth_redirect_facebook(req):
     """
     :param req:
     :return:
     """
-    print(req)
     get_data = req.GET
-    err_reason = get_data.get('err_reason', None)
-    # user가 facebook login을 하지 않은 경우
-    if err_reason is not None:
-        error = get_data.get('error', None)
-        error_description = get_data.get('error_description', None)
-        pass
+    # user가 facebook login을 취소 경우
+    if get_data.get('error', None) is not None:
+        context = {
+            'facebook' : True,
+            'code' : get_data.get('error_code', None),
+            'reason' : get_data.get('error_reason', None),
+            'error' : get_data.get('error', None),
+            'desc' : get_data.get('error_description', None),
+        }
+        return render_oauth(req, 'oauth_login_cancel.html', context)
     # for ele in get_data:
     #     print(f'{ele.key} : {ele.value}')
     code = get_data.get('code', None)
@@ -70,16 +72,19 @@ def oauth_redirect_facebook(req):
         return None
     cur_url = reverse('gmtool:index') + auth_setting["REDIRECT_URL_NAME"]
     redirect_uri = f"https://{req.get_host()}{cur_url}"
-    ret_token_data = get_token_data(auth_setting, redirect_uri, code)
 
-    if not is_valid_access_token(auth_setting, ret_token_data['ret_token_data']):
+    ret_token_data = get_token_data(auth_setting, redirect_uri, code)
+    access_token = ret_token_data['access_token']
+    validate_sec = ret_token_data['expires_in']
+
+    if not is_valid_access_token(auth_setting['CLIENT_ID'], auth_setting['CLIENT_SECRET'], access_token):
         pass
 
-    user_data = get_facebook_user_data(ret_token_data['ret_token_data'])
+    user_data = get_facebook_user_data(access_token)
 
     user_email = user_data['email']
-    
 
+    regist_or_login_facebook(req, user_email, access_token, validate_sec)
 
     return redirect(reverse('gmtool:index'))
     pass
@@ -96,20 +101,17 @@ def get_token_data(auth_setting, redirect_uri, code):
         'code' : code
     }
     reply = requests.get(get_token_url, params=params)
-
-    print(f'oauth_code_facebook:{reply.json()}')
     return reply.json()
 
 def is_valid_access_token(client_id, client_secret, access_token):
     "access_token의 유효성 검사."
     params = {
         'input_token':access_token,
-        'access_token' : {client_id|client_secret}
+        'access_token' : f'{client_id}|{client_secret}'
     }
-    check_url = 'graph.facebook.com/debug_token'
+    check_url = 'https://graph.facebook.com/debug_token'
 
     ret = requests.get(check_url, params=params)
-    print(f'is_valid_access_token:{ret.json()}')
     return ret.json()['data']['is_valid']
 
 def get_facebook_user_data(access_token):
@@ -124,7 +126,36 @@ def get_facebook_user_data(access_token):
     ret = requests.get(get_url, params = params)
     return ret.json()
 
+def regist_or_login_facebook(req, user_email, access_token, validate_sec):
+    user = None
+    platform_data = None
+    if not User.objects.filter(email__exact = user_email).exists():
+        user = User.objects.create_user(user_email, access_token)
+        if user is not None:
+            platform_data = GmPlatform(gm=user, platform_type = PlatformType.FACE_BOOK, access_token = access_token)
+            platform_data.save()
+            pass
+        pass
+    else:
+        user = User.objects.get(email=user_email)
+        # 기존 oauth 로그인을 한 유저.
+        if user.Platform.exists():
+            platform = user.Platform.first()
+            platform.access_token = access_token
+            platform.save()
+            user.set_password(access_token)
+            user.save()
+        else:
+            # 이미 해당 email을 사용한 일반 로그인이 존재하는 경우. 별도 view 추가할 예정.
+            return redirect(reverse('gmtool:login'))
 
+    if authenticate(req, email = user_email, password = access_token):
+        # 세션 timeout도 validate_sec으로 지정.
+        req.session.set_expiry(validate_sec)
+        login(req, user)
+        return redirect(reverse('gmtool:index'))
+
+    pass
 
 
 def oauth_expired_facebook(req):
