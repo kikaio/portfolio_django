@@ -47,6 +47,12 @@ def gm_register(req):
         context['form'] = form
     return render_gm(req, 'register.html', context)
 
+def gm_delete(req, id):
+    if not req.user.is_superuser:
+        return redirect(reverse('gmtool:err-400'))
+    Gm.objects.filter(id__exact=id).delete()
+    return redirect(reverse('gmtool:gm-list'))
+
 @login_required
 def gm_change_pw(req):
     form = None

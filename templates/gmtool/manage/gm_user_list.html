@@ -71,6 +71,12 @@
                                 colspan="1" aria-label="Office: activate to sort column ascending"
                                 style="width: 200px;">last login date[UTC]
                             </th>
+                            {%if user.is_superuser%}
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">Do Delete
+                            </th>
+                            {%endif%}
                         </tr>
                         </thead>
                         <tbody>
@@ -83,6 +89,15 @@
                             </td>
                             <td>{{gm_user.is_superuser}}</td>
                             <td>{{gm_user.last_login|date:'Y-m-d H:i:s'}}</td>
+                            {% if user.is_superuser %}
+                            <td>
+                                {% if gm_user.is_superuser%}
+                                    <a style="display: table-cell;" href="#">Super User Can't Delete</a>
+                                {% else %}
+                                    <a style="display: table-cell;" href="{% url 'gmtool:gm-delete' gm_user.id %}">Do Delete</a>
+                                {% endif %}
+                            </td>
+                            {% endif %}
                         </tr>
                         {% endif %}
                         {% endfor %}
@@ -123,6 +138,12 @@
                                 colspan="1" aria-label="Office: activate to sort column ascending"
                                 style="width: 200px;">last login date[UTC]
                             </th>
+                            {%if user.is_superuser%}
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                colspan="1" aria-label="Office: activate to sort column ascending"
+                                style="width: 200px;">Do Delete
+                            </th>
+                            {%endif%}
                         </tr>
                         </thead>
                         <tbody>
@@ -135,6 +156,15 @@
                             </td>
                             <td>{{gm_user.is_superuser}}</td>
                             <td>{{gm_user.last_login|date:'Y-m-d H:i:s'}}</td>
+                            {% if user.is_superuser %}
+                            <td>
+                                {% if gm_user.is_superuser%}
+                                    <a style="display: table-cell;" href="#">Super User Can't Delete</a>
+                                {% else %}
+                                    <a style="display: table-cell;" href="{% url 'gmtool:gm-delete' gm_user.id %}">Do Delete</a>
+                                {% endif %}
+                            </td>
+                            {% endif %}
                         </tr>
                         {% endif %}
                         {% endfor %}

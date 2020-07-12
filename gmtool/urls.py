@@ -11,6 +11,7 @@ urlpatterns = [
     path('gm-deactivate/<int:pk>', views.GmDeactivateView.as_view(), name='gm-deactivate'),
     path('gm-change-pw', views.gm_change_pw, name='gm-change-pw'),
     path('gm-register', views.gm_register, name='gm-register'),
+    path('gm-delete/<int:id>/', views.gm_delete, name='gm-delete'),
     path('gm-reset-pw', views.gm_reset_pw, name='gm-reset-pw'),
     path('gm-reset-pw-req', views.gm_reset_pw_req, name='gm-reset-pw-req'),
     path('gm-reset-pw-token/<uidb64>/<token>', views.gm_reset_pw_token, name='gm-reset-pw-token'),
