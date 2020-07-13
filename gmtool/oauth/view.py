@@ -77,10 +77,10 @@ def oauth_redirect_facebook(req):
     access_token = ret_token_data['access_token']
     validate_sec = ret_token_data['expires_in']
 
-    if not is_valid_access_token(auth_setting['CLIENT_ID'], auth_setting['CLIENT_SECRET'], access_token):
+    if not is_valid_access_token_facebook(auth_setting['CLIENT_ID'], auth_setting['CLIENT_SECRET'], access_token):
         pass
 
-    user_data = get_facebook_user_data(access_token)
+    user_data = get_user_data_facebook(access_token)
 
     user_email = user_data['email']
 
@@ -103,7 +103,7 @@ def get_token_data(auth_setting, redirect_uri, code):
     reply = requests.get(get_token_url, params=params)
     return reply.json()
 
-def is_valid_access_token(client_id, client_secret, access_token):
+def is_valid_access_token_facebook(client_id, client_secret, access_token):
     "access_token의 유효성 검사."
     params = {
         'input_token':access_token,
@@ -114,7 +114,7 @@ def is_valid_access_token(client_id, client_secret, access_token):
     ret = requests.get(check_url, params=params)
     return ret.json()['data']['is_valid']
 
-def get_facebook_user_data(access_token):
+def get_user_data_facebook(access_token):
     "user 관련 data 획득, 필요한 data는 field에 추가."
     need_data = ['email']
     get_url = 'https://graph.facebook.com/me'
