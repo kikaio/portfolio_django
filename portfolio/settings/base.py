@@ -50,7 +50,7 @@ DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
 oauth_key = get_json_content('auth_key.json')
 # FACEBOOK OAUTH 설정값.
 FACEBOOK = get_val_from_json(oauth_key, 'FACEBOOK')
-
+GOOGLE = get_val_from_json(oauth_key, 'GOOGLE')
 
 
 

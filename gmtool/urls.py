@@ -49,9 +49,12 @@ urlpatterns += [
 urlpatterns +=[
     path('oauth-login', views.oauth_login, name='oauth-login'),
     path('oauth-login-facebook', views.oauth_login_facebook, name='oauth-login-facebook'),
-    # http://kikaio.pythonanywhere.com/oauth-redirect-facebook/
     path('oauth-redirect-facebook', views.oauth_redirect_facebook, name='oauth-redirect-facebook'),
     path('app-cancel-facebook', views.app_cancel_facebook, name = 'app-cancel-facebook'),
+
+    path('oauth-login-google', views.oauth_login_google, name='oauth-login-google'),
+    path('oauth-redirect-google', views.oauth_redirect_google, name='oauth-redirect-google'),
+
 ]
 
 

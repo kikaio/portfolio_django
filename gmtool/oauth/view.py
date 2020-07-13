@@ -19,12 +19,13 @@ def render_oauth(req, template_name:str='', context:dict={}):
 
 def oauth_login(req):
     context = {}
-    facebook = {
-        'client_id':'',
-        'redirect_url':'',
-    }
-    context['facebook'] =facebook
+    context['facebook'] = True
+    context['google'] = True
     return render_oauth(req, 'oauth_login.html', context)
+
+"""
+Facebook OAuth 2
+"""
 
 def oauth_login_facebook(req):
     """
@@ -73,7 +74,7 @@ def oauth_redirect_facebook(req):
     cur_url = reverse('gmtool:index') + auth_setting["REDIRECT_URL_NAME"]
     redirect_uri = f"https://{req.get_host()}{cur_url}"
 
-    ret_token_data = get_token_data(auth_setting, redirect_uri, code)
+    ret_token_data = get_token_data_facebook(auth_setting, redirect_uri, code)
     access_token = ret_token_data['access_token']
     validate_sec = ret_token_data['expires_in']
 
@@ -89,7 +90,7 @@ def oauth_redirect_facebook(req):
     return redirect(reverse('gmtool:index'))
     pass
 
-def get_token_data(auth_setting, redirect_uri, code):
+def get_token_data_facebook(auth_setting, redirect_uri, code):
     "accewss_token 관련 정보를 json형식으로 받아옴. { access_token, token_type, expires_in:유효 시간{초} ]"
     client_id = auth_setting['CLIENT_ID']
     client_secret = auth_setting['CLIENT_SECRET']
@@ -163,3 +164,93 @@ def app_cancel_facebook(req):
         return redirect(reverse('gmtool:err-400'))
     post_data = req.POST
     print(post_data)
+
+
+
+"""
+Google OAuth2 
+"""
+
+def oauth_login_google(req):
+    oauth_setting = getattr(settings, 'GOOGLE', None)
+    if oauth_setting is None:
+        pass
+    view_name = oauth_setting["REDIRECT_URL_NAME"]
+    cur_url = reverse(f'gmtool:{view_name}')
+    host = req.get_host()
+    if host == '127.0.0.1:8000':
+        host = 'localhost:8000'
+    redirect_url =f'http://{host}{cur_url}'
+
+    google_auth_uri = oauth_setting["AUTH_URI"]
+    client_id = oauth_setting["CLIENT_ID"]
+
+    params = {
+        "client_id" : client_id,
+        "redirect_uri" : redirect_url,
+        "response_type" : "code",
+        "scope" : "https://www.googleapis.com/auth/userinfo.email",
+    }
+    to = f'{google_auth_uri}?'
+    for key, value in params.items():
+        to += f'{key}={value}&'
+
+    # return redirect(google_auth_uri, params)
+    return redirect(to)
+
+
+def oauth_redirect_google(req):
+    get_data = req.GET
+    print(get_data)
+
+    # error page 추가할 것.
+    if get_data.get('error', None) is not None:
+        pass
+
+
+    code = get_data.get('code', None)
+    scope = get_data.get('scope', None)
+
+    oauth_setting = getattr(settings, 'GOOGLE', None)
+    view_name = oauth_setting["REDIRECT_URL_NAME"]
+    cur_url = reverse(f'gmtool:{view_name}')
+    host = req.get_host()
+    if host == '127.0.0.1:8000':
+        host = 'localhost:8000'
+    redirect_uri =f'http://{host}{cur_url}'
+
+    token_data = get_token_data_google(oauth_setting, code, redirect_uri)
+    print(f'token_data : {token_data}')
+    # error page 추가할 것.
+    if token_data.get('error', None) is not None:
+        pass
+    # token validation 확인.
+    if is_valid_access_token_google(oauth_setting, token_data):
+        pass
+
+    user_data = get_user_data_google()
+
+    return redirect(reverse('gmtool:index'))
+
+
+def get_token_data_google(oauth_setting, code, redirect_url):
+    client_id = oauth_setting["CLIENT_ID"]
+    client_secret = oauth_setting["CLIENT_SECRET"]
+
+    token_uri = oauth_setting['TOKEN_URI']
+    params = {
+        'code': code,
+        'client_id' : client_id,
+        'client_secret': client_secret,
+        'redirect_uri': redirect_url,
+        'grant_type': 'authorization_code',
+    }
+    ret = requests.post(token_uri, params = params)
+    return ret.json()
+
+def is_valid_access_token_google(oauth_setting, token_data):
+    return True
+
+
+def get_user_data_google():
+    pass

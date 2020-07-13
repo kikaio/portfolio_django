@@ -10,10 +10,17 @@
         </div>
         <div class="card-body">
             <p>OAuth를 통해 Regist 및 Login 과정을 진행합니다.</p>
-            <!--        <a href="#" class="btn btn-google btn-block"><i class="fab fa-google fa-fw"></i> Login with Google</a>-->
             {% if facebook %}
-            <a href="{% url 'gmtool:oauth-login-facebook'%}" class="btn btn-facebook btn-block"><i class="fab fa-facebook-f fa-fw"></i> Login with
-                Facebook</a>
+            <a href="{% url 'gmtool:oauth-login-google' %}" class="btn btn-google btn-block">
+                <i class="fab fa-google fa-fw"></i>
+                Login with Google
+            </a>
+            {% endif %}
+            {% if facebook %}
+            <a href="{% url 'gmtool:oauth-login-facebook'%}" class="btn btn-facebook btn-block">
+                <i class="fab fa-facebook-f fa-fw"></i>
+                Login with Facebook
+            </a>
             {% endif %}
             <!--        <a href="#" class="btn btn-google btn-block"><i class="fab fa-google fa-fw"></i> Login with Kakao</a>-->
         </div>
