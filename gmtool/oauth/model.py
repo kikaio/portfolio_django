@@ -23,14 +23,14 @@ class GmPlatform(models.Model):
         default='',
         null=True,
         blank=True,
-        max_length=100,
+        max_length=250,
     )
 
     reflesh_token = models.CharField(
         default='',
         null=True,
         blank=True,
-        max_length=100,
+        max_length=250,
     )
 
     auth_state = models.IntegerField(
