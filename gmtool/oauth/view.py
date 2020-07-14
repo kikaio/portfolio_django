@@ -17,6 +17,48 @@ def render_oauth(req, template_name:str='', context:dict={}):
     return render(req, f'{OAUTH_ROOT}/{template_name}', context)
 
 
+def regist_or_login_platform(req, user_email, access_token, validate_sec, platform_type = PlatformType.NONE):
+    if platform_type == PlatformType.NONE:
+        return None
+
+    user = None
+    platform_data = None
+    if not User.objects.filter(email__exact = user_email).exists():
+        print(f'email : platform-{platform_type.name} user-{user_email} created')
+        user = User.objects.create_user(user_email, access_token)
+        if user is not None:
+            platform_data = GmPlatform(gm=user, platform_type = platform_type, access_token = access_token)
+            platform_data.save()
+            pass
+        pass
+    else:
+        user = User.objects.get(email=user_email)
+        # 기존 oauth 로그인을 한 유저.
+        if user.Platform.exists():
+            platform = user.Platform.first()
+            # 타 플랫폼으로 이미 계정 연동 -> error.
+            if platform.platform_type != platform_type:
+                print(f'email : user-{user_email} has already logined platform-{platform.platform_type.name}')
+                return None
+            platform.access_token = access_token
+            platform.save()
+            user.set_password(access_token)
+            user.save()
+            print(f'email : user-{user_email} logined platform-{platform.platform_type.name}')
+        else:
+            print(f'email : user-{user_email} has created account using this mail')
+            # 이미 해당 email을 사용한 일반 로그인이 존재하는 경우. 별도 view 추가할 예정.
+            return redirect(reverse('gmtool:index'))
+
+    if authenticate(req, email = user_email, password = access_token):
+        # 세션 timeout도 validate_sec으로 지정.
+        req.session.set_expiry(validate_sec)
+        login(req, user)
+        return redirect(reverse('gmtool:index'))
+
+    pass
+
+
 def oauth_login(req):
     context = {}
     context['facebook'] = True
@@ -85,7 +127,7 @@ def oauth_redirect_facebook(req):
 
     user_email = user_data['email']
 
-    regist_or_login_facebook(req, user_email, access_token, validate_sec)
+    regist_or_login_platform(req, user_email, access_token, validate_sec, PlatformType.FACE_BOOK)
 
     return redirect(reverse('gmtool:index'))
     pass
@@ -126,38 +168,6 @@ def get_user_data_facebook(access_token):
 
     ret = requests.get(get_url, params = params)
     return ret.json()
-
-def regist_or_login_facebook(req, user_email, access_token, validate_sec):
-    user = None
-    platform_data = None
-    if not User.objects.filter(email__exact = user_email).exists():
-        user = User.objects.create_user(user_email, access_token)
-        if user is not None:
-            platform_data = GmPlatform(gm=user, platform_type = PlatformType.FACE_BOOK, access_token = access_token)
-            platform_data.save()
-            pass
-        pass
-    else:
-        user = User.objects.get(email=user_email)
-        # 기존 oauth 로그인을 한 유저.
-        if user.Platform.exists():
-            platform = user.Platform.first()
-            platform.access_token = access_token
-            platform.save()
-            user.set_password(access_token)
-            user.save()
-        else:
-            # 이미 해당 email을 사용한 일반 로그인이 존재하는 경우. 별도 view 추가할 예정.
-            return redirect(reverse('gmtool:login'))
-
-    if authenticate(req, email = user_email, password = access_token):
-        # 세션 timeout도 validate_sec으로 지정.
-        req.session.set_expiry(validate_sec)
-        login(req, user)
-        return redirect(reverse('gmtool:index'))
-
-    pass
-
 
 def app_cancel_facebook(req):
     if not req.method == 'POST':
@@ -224,12 +234,10 @@ def oauth_redirect_google(req):
     # error page 추가할 것.
     if token_data.get('error', None) is not None:
         pass
-    # token validation 확인.
-    if is_valid_access_token_google(oauth_setting, token_data):
-        pass
 
-    id_token = get_decoded_id_token_google(token_data)
-    print(f'decodered id_token : {id_token}')
+    id_token = get_decoded_id_token_google(oauth_setting, token_data)
+
+    regist_or_login_platform(req, id_token['email'], token_data['access_token'], token_data['expires_in'], PlatformType.GOOGLE)
 
     return redirect(reverse('gmtool:index'))
 
@@ -249,16 +257,27 @@ def get_token_data_google(oauth_setting, code, redirect_url):
     ret = requests.post(token_uri, params = params)
     return ret.json()
 
-def is_valid_access_token_google(oauth_setting, token_data):
-    return True
 
-def get_decoded_id_token_google(token_data):
+def get_decoded_id_token_google(oauth_setting, token_data):
     import jwt
-    import base64
-    "해당 id_token은 json web token으로 디코딩 해야함. -> PyJwt,  pyjwt[crypto] install 필수."
+    from jwt.algorithms import RSAAlgorithm
+    "해당 id_token은 json web token으로 디코딩 해야함. -> PyJwt,  pyjwt[crypto], cryptography install 필수."
     id_token = f'{token_data.get("id_token", None)}'
-    print(f'id_token : {id_token}')
     if id_token is not None:
-        id_token = jwt.decode(id_token, algorithms='RS256')
-    return id_token
+        "해당 token에 대한 검증 절차. https://www.ykrods.net/posts/2019/04/30/pyjwt-id_token-validation/ -> 참고."
+        cert_uri = 'https://www.googleapis.com/oauth2/v3/certs'
+        jwt_header = jwt.get_unverified_header(id_token)
+        ret_keys = requests.get(cert_uri).json()['keys']
+        cur_key = None
+        for jwt_key in ret_keys :
+            if jwt_key['kid'] == jwt_header['kid']:
+                cur_key = jwt_key
+                break
 
+        if cur_key is None:
+            return None
+        public_key = RSAAlgorithm.from_jwk(json.dumps(cur_key))
+
+        id_token = jwt.decode(id_token, public_key, issure = 'https://accounts.google.com', audience=oauth_setting['CLIENT_ID'], algorithms=['RS256'])
+        print(f'decodered id_token : {id_token}')
+    return id_token
