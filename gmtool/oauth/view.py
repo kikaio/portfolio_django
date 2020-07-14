@@ -189,7 +189,7 @@ def oauth_login_google(req):
         "client_id" : client_id,
         "redirect_uri" : redirect_url,
         "response_type" : "code",
-        "scope" : "https://www.googleapis.com/auth/userinfo.email",
+        "scope" : "email",
     }
     to = f'{google_auth_uri}?'
     for key, value in params.items():
@@ -228,7 +228,8 @@ def oauth_redirect_google(req):
     if is_valid_access_token_google(oauth_setting, token_data):
         pass
 
-    user_data = get_user_data_google()
+    id_token = get_decoded_id_token_google(token_data)
+    print(f'decodered id_token : {id_token}')
 
     return redirect(reverse('gmtool:index'))
 
@@ -251,6 +252,13 @@ def get_token_data_google(oauth_setting, code, redirect_url):
 def is_valid_access_token_google(oauth_setting, token_data):
     return True
 
+def get_decoded_id_token_google(token_data):
+    import jwt
+    import base64
+    "해당 id_token은 json web token으로 디코딩 해야함. -> PyJwt,  pyjwt[crypto] install 필수."
+    id_token = f'{token_data.get("id_token", None)}'
+    print(f'id_token : {id_token}')
+    if id_token is not None:
+        id_token = jwt.decode(id_token, algorithms='RS256')
+    return id_token
 
-def get_user_data_google():
-    pass
