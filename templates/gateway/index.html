@@ -11,6 +11,9 @@
         서비스별 간단한 설명과 해당 서비스에 접근할 수 있는 view 버튼이 있습니다.<br>
         모든 서비스들은 django 를 활용하여 만들었습니다.</p>
       <p>
+      {% if debug %}
+      <p>현재 DEBUG Mode 입니다.</p>
+      {% endif %}
         <a href="https://www.djangoproject.com/" class="btn btn-primary my-2"> Go to Django Official Web page</a>
 <!--        <a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
       </p>

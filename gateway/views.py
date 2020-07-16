@@ -34,7 +34,10 @@ def index(req):
         'gateway:index',
     ])
 
-    return render_gateway(req, 'index.html', {'apps' : app_list})
+    context = {}
+    context['apps'] = app_list
+    context['debug'] = getattr(settings, 'DEBUG', True)
+    return render_gateway(req, 'index.html', context)
 
 
 def contact(req):
