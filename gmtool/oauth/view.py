@@ -273,11 +273,8 @@ def get_decoded_id_token_google(oauth_setting, token_data):
             if jwt_key['kid'] == jwt_header['kid']:
                 cur_key = jwt_key
                 break
-
         if cur_key is None:
             return None
         public_key = RSAAlgorithm.from_jwk(json.dumps(cur_key))
-
         id_token = jwt.decode(id_token, public_key, issure = 'https://accounts.google.com', audience=oauth_setting['CLIENT_ID'], algorithms=['RS256'])
-        print(f'decodered id_token : {id_token}')
     return id_token
