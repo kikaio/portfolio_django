@@ -71,9 +71,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'restframework'
     'imagekit',
     'gateway',
     'gmtool',
+    'outstargram_drf'
 ]
 
 MIDDLEWARE = [
