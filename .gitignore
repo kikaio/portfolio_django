@@ -36,3 +36,9 @@ media/gmtool/
 gmtool/oauth/__pycache__/
 gmtool/err/__pycache__/
 portfolio/settings/auth_key.json
+outstargram_drf/__pycache__/
+outstargram_drf/migrations/
+outstargram_drf/services/__pycache__/views.cpython-38.pyc
+outstargram_drf/services/__pycache__/models.cpython-38.pyc
+outstargram_drf/sign/__pycache__/views.cpython-38.pyc
+outstargram_drf/sign/__pycache__/models.cpython-38.pyc
