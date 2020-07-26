@@ -8,7 +8,7 @@ class Author(models.Model):
     follower_Cnt = models.IntegerField(default=0)
     follow_cnt = models.IntegerField(default=0)
     desc = models.CharField(
-        default=0,
+        default='',
         max_length= 100,
         blank=True,
         null=False
