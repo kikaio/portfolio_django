@@ -4,9 +4,10 @@ from outstargram_drf import views
 from rest_framework.routers import DefaultRouter
 from rest_framework.routers import format_suffix_patterns
 
-app_name = 'outstargrame_drf'
+app_name = 'outstargram-drf'
 
 urlpatterns = [
+    path('', views.index, name='index'),
     # path('gm-list', views.gm_list, name='gm-list'),
     # path('gm/<int:pk>', views.gm_detail, name='gm'),
     # path('author-list', views.author_list, name='author-list'),
@@ -27,7 +28,3 @@ urlpatterns = [
 
 urlpatterns = format_suffix_patterns(urlpatterns)
 
-urlpatterns += [
-    path('/', views.index, name='index'),
-
-]
