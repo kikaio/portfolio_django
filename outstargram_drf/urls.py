@@ -28,6 +28,7 @@ urlpatterns = [
     path('post-list', views.PostListGeneric.as_view(), name='post-list'),
     path('post/<int:pk>', views.PostDetailGeneric.as_view(), name='post-detail'),
 
+    path('author-posts/<int:pk>', views.authors_posts, name='author-posts'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

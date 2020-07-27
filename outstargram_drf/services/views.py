@@ -1,5 +1,9 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework import generics
 
 
@@ -17,9 +21,14 @@ class PostDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SerPost
     pass
 
-
-
-
+@api_view(['GET'])
+def authors_posts(req, pk):
+    author = get_object_or_404(Author, id=pk)
+    if req.method == 'GET':
+        posts = author.posts.all()
+        ser = SerPost(posts, many=True)
+        return Response(ser.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def follow(req, target):
     """해당 유저 팔로우"""

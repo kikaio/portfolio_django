@@ -256,3 +256,5 @@ class AuthorDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = SerAuthor
     pass
+
+
