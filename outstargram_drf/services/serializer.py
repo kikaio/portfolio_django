@@ -42,6 +42,8 @@ class SerAuthor(serializers.Serializer):
     follower_cnt = serializers.IntegerField(default=0)
     desc = serializers.CharField(default='', max_length=100)
 
+    post = serializers.PrimaryKeyRelatedField(read_only=True)
+
     def create(self, validated_data):
         return Author.objects.create(**validated_data)
 
@@ -53,3 +55,11 @@ class SerAuthor(serializers.Serializer):
         return inst
     pass
 
+
+class SerPost(serializers.ModelSerializer):
+
+    date_registed = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ['contents', 'author', 'date_registed']

@@ -1,6 +1,25 @@
 from django.shortcuts import render
 
+from rest_framework import generics
+
+
+from outstargram_drf.services.models import *
+from outstargram_drf.services.serializer import *
 # Create your views here.
+
+class PostListGeneric(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = SerPost
+    pass
+
+class PostDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = SerPost
+    pass
+
+
+
+
 
 def follow(req, target):
     """해당 유저 팔로우"""

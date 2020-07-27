@@ -17,7 +17,7 @@ class Author(models.Model):
 class Post(models.Model):
     """작성글"""
     contents = models.CharField(max_length=150)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, related_name='posts', on_delete=models.CASCADE)
     date_registed = models.DateTimeField(default=datetime.utcnow)
 
     class Meta:
