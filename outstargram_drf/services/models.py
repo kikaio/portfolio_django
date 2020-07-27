@@ -4,8 +4,8 @@ from datetime import datetime
 User = get_user_model()
 
 class Author(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    follower_Cnt = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    follower_cnt = models.IntegerField(default=0)
     follow_cnt = models.IntegerField(default=0)
     desc = models.CharField(
         default='',

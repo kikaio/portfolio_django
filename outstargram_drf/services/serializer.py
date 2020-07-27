@@ -9,11 +9,12 @@ class SerGm(serializers.Serializer):
         read_only=True,
         style = {
             'input_type' : 'password'
-        }
+        },
+        max_length=100
     )
-    is_active = serializers.BooleanField(default=True, )
-    is_superuser = serializers.BooleanField(default=False, )
-    is_locked = serializers.BooleanField(default=False, )
+    is_active = serializers.BooleanField(default=True)
+    is_superuser = serializers.BooleanField(default=False)
+    is_locked = serializers.BooleanField(default=False)
 
     def create(self, validated_data):
         email = validated_data.get('email', None)
@@ -36,9 +37,9 @@ class SerGm(serializers.Serializer):
 
 class SerAuthor(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    user = serializers.RelatedField(read_only=True)
-    follow_cnt = serializers.IntegerField(read_only=True)
-    follower_cnt = serializers.IntegerField(read_only=True)
+    user = serializers.SlugRelatedField(slug_field='email', read_only=True)
+    follow_cnt = serializers.IntegerField(default=0)
+    follower_cnt = serializers.IntegerField(default=0)
     desc = serializers.CharField(default='', max_length=100)
 
     def create(self, validated_data):
