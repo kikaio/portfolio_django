@@ -14,21 +14,19 @@ from outstargram_drf.services.serializer import *
 class PostListGeneric(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = SerPost
+
+    def get_queryset(self):
+        author_id = self.request.query_params.get('author',  None)
+        if author_id is None:
+            return Post.objects.all()
+        else:
+            return Post.objects.filter(author__exact=int(author_id))
     pass
 
 class PostDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = SerPost
     pass
-
-@api_view(['GET'])
-def authors_posts(req, pk):
-    author = get_object_or_404(Author, id=pk)
-    if req.method == 'GET':
-        posts = author.posts.all()
-        ser = SerPost(posts, many=True)
-        return Response(ser.data)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def follow(req, target):
     """해당 유저 팔로우"""
