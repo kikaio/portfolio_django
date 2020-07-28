@@ -5,15 +5,22 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework import generics
-
+from rest_framework.pagination import PageNumberPagination
 
 from outstargram_drf.services.models import *
 from outstargram_drf.services.serializer import *
 # Create your views here.
 
+class PostListPager(PageNumberPagination):
+    page_size = 2
+    max_page_size = 100
+    page_size_query_param = 'page_size'
+
+
 class PostListGeneric(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = SerPost
+    pagination_class = PostListPager
 
     def get_queryset(self):
         author_id = self.request.query_params.get('author',  None)
