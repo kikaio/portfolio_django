@@ -59,7 +59,14 @@ class SerAuthor(serializers.Serializer):
 class SerPost(serializers.ModelSerializer):
 
     date_registed = serializers.DateTimeField(read_only=True)
+    photos = serializers.SlugRelatedField(queryset= Photo.objects.all(), slug_field='name')
 
     class Meta:
         model = Post
-        fields = ['contents', 'author', 'date_registed']
+        fields = ['contents', 'author', 'date_registed', 'photos']
+
+
+class SerPhoto(serializers.ModelSerializer):
+
+    class Meta:
+        model = Photo

@@ -25,6 +25,11 @@ class Post(models.Model):
 
     # followers = models.ManyToManyRel('self', related_name='followees', related_query_name='followee', symmetrical=False)
     pass
+
+class Photo(models.Model):
+    post = models.ForeignKey(Post, related_name='photos', on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='outs')
+
 #
 # class Comment(models.Model):
 #     """post에 대한 댓글, 또는 그에 대한 대댓글"""
