@@ -37,4 +37,21 @@ def index(req, format=None):
         request=req,
         format=format,
     )
+
+    context['follow_list'] = reverse(
+        'outstargram-drf:follow-list',
+        request=req,
+        format=format,
+    )
+
+    context['post_like_list'] = reverse(
+        'outstargram-drf:post-like-list',
+        request=req,
+        format=format,
+    )
+    context['comment_like_list'] = reverse(
+        'outstargram-drf:comment-like-list',
+        request=req,
+        format=format,
+    )
     return Response(context)
