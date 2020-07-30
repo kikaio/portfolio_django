@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from outstargram_drf.models import *
 
-
 class SerGm(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     email = serializers.EmailField(read_only=True)
@@ -56,17 +55,53 @@ class SerAuthor(serializers.Serializer):
     pass
 
 
+class PhotoUrlField(serializers.RelatedField):
+
+    def to_representation(self, value):
+        req = self.context.get('request', None)
+        url = value.photo.url
+        if not req :
+            return url
+        return  f'{req.get_host()}{url}'
+
+    pass
+
+
 class SerPost(serializers.ModelSerializer):
 
     date_registed = serializers.DateTimeField(read_only=True)
-    photos = serializers.SlugRelatedField(queryset= Photo.objects.all(), slug_field='name')
+    # photos = serializers.SlugRelatedField(
+    #     many=True,
+    #     slug_field='photo.url',
+    #     required=False,
+    #     default=None,
+    #     read_only=True,
+    # )
+
+    photos = PhotoUrlField(
+        many=True,
+        required=False,
+        default=None,
+        read_only=True,
+    )
 
     class Meta:
         model = Post
-        fields = ['contents', 'author', 'date_registed', 'photos']
+        fields = ['contents', 'user', 'date_registed', 'photos']
 
+
+class SerComment(serializers.ModelSerializer):
+
+    date_registed = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Comment
+        fields = ['user', 'post', 'contents', 'date_registed', 'reply']
+    pass
 
 class SerPhoto(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
+        fields = ['id', 'post', 'photo']
+    pass
