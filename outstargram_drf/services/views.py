@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import mixins
+
 
 from outstargram_drf.services.models import *
 from outstargram_drf.services.serializer import *
@@ -41,57 +43,51 @@ class PhotoListGeneric(generics.ListCreateAPIView):
     serializer_class = SerPhoto
     pass
 
+
+class PhotoDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Photo.objects.all()
+    serializer_class = SerPhoto
+    pass
+
+
 class CommentListGeneric(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = SerComment
     pass
 
 
-def follow(req, target):
-    """해당 유저 팔로우"""
+class CommentDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = SerComment
     pass
 
-def unfollow(req, target):
-    """해당 유저 언팔로우"""
+
+class FollowRelationGeneric(generics.ListCreateAPIView, mixins.DestroyModelMixin):
+    queryset = FollowRelation.objects.all()
+    serializer_class = SerFollowRelation
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('followee',  None)
+        if not user_id:
+            return FollowRelation.objects.all()
+        else:
+            return FollowRelation.objects.filter(followee__exact = user_id)
+        pass
+
+    def delete(self, request, *args, **kwargs):
+        self.destroy(request, *args, **kwargs)
+
     pass
 
-def post_upload(req):
-    """사진 업로드"""
-    pass
 
-def post_like(req, post_id):
+class PostLikeGeneric(generics.ListCreateAPIView, mixins.DestroyModelMixin):
     """사진 좋아요"""
-    pass
-
-def post_like_cancel(req, post_id):
-    """사진 좋아요 취소"""
-    pass
-
-def post_delete(req, post_id):
-    """포스트 삭제"""
-    pass
-
-def post_comment(req, post_id):
-    """댓글"""
-    pass
-
-def post_comment_delete(req, comment_id):
-    """댓글 삭제"""
-    pass
-
-def post_comment_like(req, comment_id):
-    """댓글 좋아요"""
-    pass
-
-def post_commnet_like_cancel(req, commnet_id):
-    """댓글 좋아요 취소"""
-    pass
-
-def post_comment_reply(req, comment_id):
-    """대댓글"""
+    queryset = PostLike.objects.all()
+    serializer_class = SerPostLike
     pass
 
 
-def search(req, text):
-    pass
+class CommentLikeGeneric(generics.ListCreateAPIView, mixins.DestroyModelMixin):
+    queryset = CommentLike.objects.all()
+    serializer_class = SerCommentLike
 

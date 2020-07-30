@@ -29,7 +29,14 @@ urlpatterns = [
     path('post/<int:pk>', views.PostDetailGeneric.as_view(), name='post-detail'),
 
     path('comment-list', views.CommentListGeneric.as_view(), name='comment-list'),
+    path('comment/<int:pk>', views.CommentDetailGeneric.as_view(), name='comment-detail'),
     path('photo-list', views.PhotoListGeneric.as_view(), name='photo-list'),
+    path('photo/<int:pk>', views.PhotoDetailGeneric.as_view(), name='photo-detail'),
+
+    path('follow-list', views.FollowRelationGeneric.as_view(), name='follow-list'),
+
+    path('post-like-list', views.PostLikeGeneric.as_view(), name='post-like-list'),
+    path('comment-like-list', views.CommentLikeGeneric.as_view(), name='comment-like-list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
