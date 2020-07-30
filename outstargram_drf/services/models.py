@@ -52,4 +52,23 @@ class Photo(models.Model):
         null=True,
         blank=True
     )
+    pass
+
+
+class FollowRelation(models.Model):
+    follower = models.ForeignKey(User, related_name='follower', on_delete=models.CASCADE)
+    followee = models.ForeignKey(User, related_name='followee', on_delete=models.CASCADE)
+    pass
+
+
+class PostLike(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    like_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pass
+
+
+class CommentLike(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    like_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pass
 
