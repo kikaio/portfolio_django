@@ -105,3 +105,56 @@ class SerPhoto(serializers.ModelSerializer):
         model = Photo
         fields = ['id', 'post', 'photo']
     pass
+
+
+class SerFollowRelation(serializers.ModelSerializer):
+
+    class Meta:
+        model = FollowRelation
+        fields = ['follower', 'followee']
+
+    def is_valid(self, raise_exception=False):
+        f_wer = int(self.fields['follower'])
+        f_wee = int(self.fields['followee'])
+        if f_wer == f_wee:
+            raise serializers.ValidationError('follower must be different with followee')
+        if f_wer <= 0 or f_wee <=0 :
+            raise serializers.ValidationError('Invalid values')
+        folower = Author.objects.get(id = f_wer)
+        folowee = Author.objects.get(id = f_wee)
+        if not folower or not folowee:
+            raise serializers.ValidationError('not exists users')
+        return super().is_valid(raise_exception)
+
+    def check_follow_input(self, f_wer, f_wee):
+        if f_wee <1 or f_wer<1:
+            raise serializers.ValidationError('Invalid values')
+        author_wer = Author.objects.get(id=f_wer)
+        author_wee = Author.objects.get(id=f_wer)
+        if not author_wer or not author_wee:
+            raise serializers.ValidationError('not exists users')
+        return author_wer, author_wee
+
+    def create(self, validated_data):
+        f_wer = validated_data.get('follower', 0)
+        f_wee = validated_data.get('followee', 0)
+        author_wer, author_wee = self.check_follow_input(f_wer, f_wee)
+        author_wer.follower_cnt = author_wee.follow_cnt + 1
+        author_wee.follower_cnt = author_wee.follower_cnt + 1
+        author_wer.save()
+        author_wee.save()
+        return super().create(validated_data)
+    pass
+
+class SerPostLike(serializers.ModelSerializer):
+
+    class Meta:
+        model = PostLike
+        fields = '__all__'
+    pass
+
+
+class SerCommentLike(serializers.ModelSerializer):
+    class Meta:
+        model = CommentLike
+        fields = '__all__'
