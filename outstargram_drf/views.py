@@ -21,4 +21,20 @@ def index(req, format=None):
         request=req,
         format=format
     )
+
+    context['post_list'] = reverse(
+        'outstargram-drf:post-list',
+        request=req,
+        format=format,
+    )
+    context['photo_list'] = reverse(
+        'outstargram-drf:photo-list',
+        request=req,
+        format=format,
+    )
+    context['comment_list'] = reverse(
+        'outstargram-drf:comment-list',
+        request=req,
+        format=format,
+    )
     return Response(context)

@@ -35,6 +35,18 @@ class PostDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SerPost
     pass
 
+
+class PhotoListGeneric(generics.ListCreateAPIView):
+    queryset = Photo.objects.all()
+    serializer_class = SerPhoto
+    pass
+
+class CommentListGeneric(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = SerComment
+    pass
+
+
 def follow(req, target):
     """해당 유저 팔로우"""
     pass
