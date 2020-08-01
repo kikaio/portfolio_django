@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.core import validators
 
+from outstargram_drf.services.perms import *
+
 from datetime import datetime
 
 
