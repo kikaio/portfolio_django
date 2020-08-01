@@ -51,6 +51,13 @@ class PostDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
 class PhotoListGeneric(generics.ListCreateAPIView):
     queryset = Photo.objects.all()
     serializer_class = SerPhoto
+
+    def get_queryset(self):
+        target_id = self.request.query_params.get('post', None)
+        if not target_id:
+            return Photo.objects.all()
+        else:
+            return Photo.objects.filter(post=target_id)
     pass
 
 
@@ -63,6 +70,15 @@ class PhotoDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
 class CommentListGeneric(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = SerComment
+
+    def get_queryset(self):
+        target_id = self.request.query_params.get('post', None)
+        if not target_id:
+            return Comment.objects.all()
+        else:
+            return Comment.objects.filter(post=target_id)
+        pass
+
     pass
 
 
