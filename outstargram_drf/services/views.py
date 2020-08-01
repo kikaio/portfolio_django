@@ -25,8 +25,7 @@ class PostListGeneric(generics.ListCreateAPIView):
     pagination_class = PostListPager
 
     permission_classes = [
-        permissions.IsAuthenticated,
-        IsPostOwnerOrReadOnly,
+        # permissions.IsAuthenticated,
     ]
 
     def get_queryset(self):
@@ -64,6 +63,7 @@ class PhotoListGeneric(generics.ListCreateAPIView):
 class PhotoDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     queryset = Photo.objects.all()
     serializer_class = SerPhoto
+
     pass
 
 
@@ -85,6 +85,11 @@ class CommentListGeneric(generics.ListCreateAPIView):
 class CommentDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = SerComment
+
+    permission_classes = [
+        IsDeleteJustForUser,
+    ]
+
     pass
 
 
@@ -112,6 +117,10 @@ class FollowRelationDetailGeneric(mixins.RetrieveModelMixin,
                                   generics.GenericAPIView):
     queryset = FollowRelation.objects.all()
     serializer_class = SerFollowRelation
+
+    permission_classes = [
+        IsFollowerCancel,
+    ]
 
     def get(self, req, *args, **kwargs):
         return self.retrieve(req, *args, **kwargs)
@@ -142,6 +151,10 @@ class PostLikeDetailGeneric(mixins.RetrieveModelMixin,
     queryset = PostLike.objects.all()
     serializer_class = SerPostLike
 
+    permission_classes = [
+        IsJustForUserLikeCancel,
+    ]
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
@@ -167,6 +180,9 @@ class CommentLikeDetailGeneric(mixins.RetrieveModelMixin,
                                generics.GenericAPIView):
     queryset = CommentLike.objects.all()
     serializer_class = SerCommentLike
+    permission_classes = [
+        IsJustForUserLikeCancel,
+    ]
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
