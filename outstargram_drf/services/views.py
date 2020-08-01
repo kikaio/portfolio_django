@@ -40,6 +40,11 @@ class PostListGeneric(generics.ListCreateAPIView):
 class PostDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = SerPost
+
+    permission_classes = [
+        IsPostOwnerOrReadOnly,
+    ]
+
     pass
 
 
