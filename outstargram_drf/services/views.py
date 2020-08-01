@@ -24,12 +24,17 @@ class PostListGeneric(generics.ListCreateAPIView):
     serializer_class = SerPost
     pagination_class = PostListPager
 
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsPostOwnerOrReadOnly,
+    ]
+
     def get_queryset(self):
-        author_id = self.request.query_params.get('author',  None)
-        if author_id is None:
+        target_id = self.request.query_params.get('author',  None)
+        if target_id is None:
             return Post.objects.all()
         else:
-            return Post.objects.filter(author__exact=int(author_id))
+            return Post.objects.filter(user=target_id)
     pass
 
 class PostDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
