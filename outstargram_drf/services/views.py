@@ -88,32 +88,90 @@ class CommentDetailGeneric(generics.RetrieveUpdateDestroyAPIView):
     pass
 
 
-class FollowRelationGeneric(generics.ListCreateAPIView, mixins.DestroyModelMixin):
+class FollowRelationListGeneric(generics.ListCreateAPIView):
     queryset = FollowRelation.objects.all()
     serializer_class = SerFollowRelation
 
     def get_queryset(self):
-        user_id = self.request.query_params.get('followee',  None)
+        user_id = self.request.query_params.get('id',  None)
+        is_followee = self.request.query_params.get('is_followee', None)
         if not user_id:
             return FollowRelation.objects.all()
         else:
-            return FollowRelation.objects.filter(followee__exact = user_id)
+            if not is_followee or (bool(is_followee) is False):
+                return FollowRelation.objects.filter(follower=user_id)
+            else:
+                return FollowRelation.objects.filter(followee=user_id)
         pass
 
-    def delete(self, request, *args, **kwargs):
-        self.destroy(request, *args, **kwargs)
+    pass
+
+
+class FollowRelationDetailGeneric(mixins.RetrieveModelMixin,
+                                  mixins.DestroyModelMixin,
+                                  generics.GenericAPIView):
+    queryset = FollowRelation.objects.all()
+    serializer_class = SerFollowRelation
+
+    def get(self, req, *args, **kwargs):
+        return self.retrieve(req, *args, **kwargs)
+
+    def delete(self, req, *args, **kwargs):
+        return self.destroy(req, *args, **kwargs)
 
     pass
 
 
-class PostLikeGeneric(generics.ListCreateAPIView, mixins.DestroyModelMixin):
-    """사진 좋아요"""
+class PostLikeListGeneric(generics.ListCreateAPIView):
+    """사진 좋아요 목록"""
     queryset = PostLike.objects.all()
     serializer_class = SerPostLike
+
+    def get_queryset(self):
+        target_id = self.request.query_params.get('post', None)
+        if target_id is None:
+            return PostLike.objects.all()
+        else:
+            return PostLike.objects.filter(post__exact=target_id)
     pass
 
 
-class CommentLikeGeneric(generics.ListCreateAPIView, mixins.DestroyModelMixin):
+class PostLikeDetailGeneric(mixins.RetrieveModelMixin,
+                            mixins.DestroyModelMixin,
+                            generics.GenericAPIView):
+    queryset = PostLike.objects.all()
+    serializer_class = SerPostLike
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+    pass
+
+
+class CommentLikeListGeneric(generics.ListCreateAPIView):
     queryset = CommentLike.objects.all()
     serializer_class = SerCommentLike
 
+    def get_queryset(self):
+        target_id = self.request.query_params.get('comment', None)
+        if target_id is None:
+            return CommentLike.objects.all()
+        else:
+            return CommentLike.objects.filter(comment__exact=target_id)
+    pass
+
+class CommentLikeDetailGeneric(mixins.RetrieveModelMixin,
+                               mixins.DestroyModelMixin,
+                               generics.GenericAPIView):
+    queryset = CommentLike.objects.all()
+    serializer_class = SerCommentLike
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    pass
