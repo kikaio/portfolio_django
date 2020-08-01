@@ -58,6 +58,34 @@ class Photo(models.Model):
 class FollowRelation(models.Model):
     follower = models.ForeignKey(User, related_name='follower', on_delete=models.CASCADE)
     followee = models.ForeignKey(User, related_name='followee', on_delete=models.CASCADE)
+
+    def get_authors(self, f_wer, f_wee):
+        f_wer = self.follower
+        f_wee = self.followee
+        follower = Author.objects.get(user=f_wer)
+        followee = Author.objects.get(user=f_wee)
+        return follower, followee
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        author_follower, author_followee = self.get_authors(self.follower, self.followee)
+        author_follower.follow_cnt = author_follower.follow_cnt+1
+        author_followee.follower_cnt = author_followee.follower_cnt+1
+        author_follower.save()
+        author_followee.save()
+        return super().save(force_insert, force_update, using, update_fields)
+
+    def delete(self, using=None, keep_parents=False):
+        author_follower, author_followee = self.get_authors(self.follower, self.followee)
+        author_follower.follow_cnt = author_follower.follow_cnt-1
+        author_followee.follower_cnt = author_followee.follower_cnt -1
+        if author_follower.follow_cnt < 0:
+            author_follower.follow_cnt = 0
+        if author_followee.follower_cnt < 0:
+            author_followee.follower_cnt = 0
+        author_follower.save()
+        author_followee.save()
+        return super().delete(using, keep_parents)
     pass
 
 
