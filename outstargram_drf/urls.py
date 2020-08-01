@@ -33,10 +33,13 @@ urlpatterns = [
     path('photo-list', views.PhotoListGeneric.as_view(), name='photo-list'),
     path('photo/<int:pk>', views.PhotoDetailGeneric.as_view(), name='photo-detail'),
 
-    path('follow-list', views.FollowRelationGeneric.as_view(), name='follow-list'),
+    path('follow-list', views.FollowRelationListGeneric.as_view(), name='follow-list'),
+    path('follow/<int:pk>', views.FollowRelationDetailGeneric.as_view(), name='follow-detail'),
 
-    path('post-like-list', views.PostLikeGeneric.as_view(), name='post-like-list'),
-    path('comment-like-list', views.CommentLikeGeneric.as_view(), name='comment-like-list'),
+    path('post-like-list', views.PostLikeListGeneric.as_view(), name='post-like-list'),
+    path('post-like/<int:pk>', views.PostLikeDetailGeneric.as_view(), name='post-like-detail'),
+    path('comment-like-list', views.CommentLikeListGeneric.as_view(), name='comment-like-list'),
+    path('comment-like/<int:pk>', views.CommentLikeDetailGeneric.as_view(), name='comment-like-detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
