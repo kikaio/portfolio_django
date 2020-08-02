@@ -28,12 +28,17 @@ def index(req):
         'gmtool:index',
     ])
     app_list.append([
+        f'{static_img_path}/icon_outstargram_drf.png',
+        'outstargram-drf',
+        _('This App is outstargram service just using django rest_framework'),
+        'outstargram-drf:index',
+    ])
+    app_list.append([
         f'{static_img_path}/icon_commingsoon.png',
-        _('This App is comming soon'),
-        'commingsoon',
+        'coming soon',
+        _('This App is not ready'),
         'gateway:index',
     ])
-
     context = {}
     context['apps'] = app_list
     context['debug'] = getattr(settings, 'DEBUG', True)
