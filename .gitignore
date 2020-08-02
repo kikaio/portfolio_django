@@ -45,3 +45,5 @@ outstargram_drf/sign/__pycache__/models.cpython-38.pyc
 outstargram_drf/services/__pycache__/serializer.cpython-38.pyc
 outstargram_drf/sign/__pycache__/serializer.cpython-38.pyc
 outstargram_drf/services/__pycache__/perms.cpython-38.pyc
+outstargram/__pycache__/
+outstargram/migrations/
