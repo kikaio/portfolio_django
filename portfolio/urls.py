@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('gateway.urls')),
     path('gmtool/', include('gmtool.urls')),
     path('outstargram-drf/', include('outstargram_drf.urls')),
+    path('outstargram/', include('outstargram.urls')),
 ]
 
 

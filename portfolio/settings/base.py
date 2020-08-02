@@ -75,7 +75,8 @@ INSTALLED_APPS = [
     'imagekit',
     'gateway',
     'gmtool',
-    'outstargram_drf'
+    'outstargram_drf',
+    'outstargram'
 ]
 
 MIDDLEWARE = [
