@@ -59,6 +59,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '[::1]',
     '.pythonanywhere.com',
+    '.ap-northeast-2.compute.amazonaws.com',
 ]
 
 
