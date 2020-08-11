@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/ubuntu/release/portfolio_django/mvenv/bin/uwsgi -i /home/release/portfolio_django/.config/uwsgi/portfolio.ini
+ExecStart=/home/ubuntu/release/portfolio_django/mvenv/bin/uwsgi -i /home/release/portfolio_django/.config/uwsgi/portfolio_live.ini
 
 Restart=always
 KillSignal=SIGQUIT
