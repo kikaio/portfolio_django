@@ -47,3 +47,5 @@ outstargram_drf/sign/__pycache__/serializer.cpython-38.pyc
 outstargram_drf/services/__pycache__/perms.cpython-38.pyc
 outstargram/__pycache__/
 outstargram/migrations/
+portfolio/settings/db_dev.json
+portfolio/settings/db_live.json
