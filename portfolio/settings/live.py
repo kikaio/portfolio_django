@@ -1,3 +1,19 @@
 from .base import *
 
 DEBUG = False
+
+sql_json = get_json_content('db_live.json')
+
+DATABASES = {
+    'default': {
+        "ENGINE" : get_val_from_json(sql_json, 'engine'),
+        "NAME" : get_val_from_json(sql_json, 'name'),
+        "USER" : get_val_from_json(sql_json, 'user'),
+        "PASSWORD": get_val_from_json(sql_json, 'pw'),
+        "HOST" : get_val_from_json(sql_json, 'host'),
+        "PORT" : get_val_from_json(sql_json, 'port'),
+        "OPTIONS" : {
+            'init_command': 'SET default_storage_engine=INNODB',
+        }
+    }
+}
