@@ -5,14 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings.base')
-    for arg in sys.argv:
-        if arg == 'dev':
-            os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings.base')
-        elif arg == 'test':
-            os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings.test')
-        elif arg == 'live':
-            os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings.live')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings.dev')
 
     try:
         from django.core.management import execute_from_command_line
