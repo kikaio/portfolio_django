@@ -15,3 +15,5 @@ DATABASES = {
         }
     }
 }
+
+WSGI_APPLICATION = 'portfolio.wsgi.debug.application'

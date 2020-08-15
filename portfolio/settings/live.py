@@ -17,3 +17,5 @@ DATABASES = {
         }
     }
 }
+
+WSGI_APPLICATION = 'portfolio.wsgi.live.application'
