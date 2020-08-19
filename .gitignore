@@ -51,3 +51,4 @@ portfolio/settings/db_dev.json
 portfolio/settings/db_live.json
 portfolio/wsgi/__pycache__/
 portfolio/settings/__pycache__/
+portfolio/settings/aws_s3_key.json

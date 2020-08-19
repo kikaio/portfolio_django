@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'imagekit',
+    'storages',
     'gateway',
     'gmtool',
     'outstargram_drf',

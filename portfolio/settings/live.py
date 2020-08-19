@@ -19,3 +19,12 @@ DATABASES = {
 }
 
 WSGI_APPLICATION = 'portfolio.wsgi.live.application'
+
+
+s3_json = get_json_content('aws_s3_key.json')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = get_val_from_json(s3_json, 'AWS_ACCESS_KEY')
+AWS_SECRET_KEY = get_val_from_json(s3_json, 'AWS_SECRET_KEY')
+AWS_STORAGE_NAME = get_val_from_json(s3_json, 'AWS_STORAGE_BUCKET_NAME')
