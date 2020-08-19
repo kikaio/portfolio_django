@@ -34,4 +34,6 @@ DEFAULT_FILE_STORAGE = 'aws.storage.StaticStorage'
 
 AWS_ACCESS_KEY_ID = get_val_from_json(s3_json, 'AWS_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = get_val_from_json(s3_json, 'AWS_SECRET_KEY')
-AWS_STORAGE_NAME = get_val_from_json(s3_json, 'AWS_STORAGE_BUCKET_NAME')
+AWS_STORAGE_BUCKET_NAME  = get_val_from_json(s3_json, 'AWS_STORAGE_BUCKET_NAME')
+AWS_REGION = get_val_from_json(s3_json, 'AWS_REGION')
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME }.s3.{AWS_REGION}.amazonaws.com.'
