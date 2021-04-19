@@ -52,3 +52,5 @@ portfolio/settings/db_live.json
 portfolio/wsgi/__pycache__/
 portfolio/settings/__pycache__/
 portfolio/settings/aws_s3_key.json
+pyvenv.cfg
+myvenv/
