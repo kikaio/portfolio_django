@@ -1,6 +1,5 @@
 from .base import *
 
-
 sql_json = get_json_content('db_dev.json')
 
 DATABASES = {
@@ -17,4 +16,4 @@ DATABASES = {
     }
 }
 
-WSGI_APPLICATION = 'portfolio.wsgi.pythonanywhere.application'
+WSGI_APPLICATION = 'portfolio.wsgi.debug.application'

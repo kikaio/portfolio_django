@@ -54,3 +54,4 @@ portfolio/settings/__pycache__/
 portfolio/settings/aws_s3_key.json
 pyvenv.cfg
 myvenv/
+portfolio/settings/confs/
