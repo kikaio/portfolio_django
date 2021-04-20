@@ -9,7 +9,7 @@ from django.core.mail import EmailMessage
 TEMPLATE_ROOT = 'gateway'
 
 static_img_path = getattr(settings, 'STATIC_ROOT', 'static/') + 'gateway/img'
-developer_mail = getattr(settings, 'DEVELOPER_MAIL', 'gjduddnr5923@gmail.com')
+developer_mail = getattr(settings, 'DEVELOPER_MAIL', 'sweetmeatboy@gmail.com')
 
 
 def render_gateway(request, templates_name:str='', context:dict= {}):
