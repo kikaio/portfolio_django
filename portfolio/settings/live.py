@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = False
 
-sql_json = get_json_content('db_live.json')
+sql_json = get_json_content('confs/db_live.json')
 
 DATABASES = {
     'default': {
