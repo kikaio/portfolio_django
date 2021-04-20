@@ -36,7 +36,7 @@ AUTH_USER_MODEL = 'gmtool.Gm'
 
 #장고 smtp 관련 계정 및 설정정보 읽기
 smtp_key = get_json_content('smtp_key.json')
-DEVELOPER_MAIL = 'gjduddnr5923@naver.com'
+DEVELOPER_MAIL = 'sweetmeatsboy@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
