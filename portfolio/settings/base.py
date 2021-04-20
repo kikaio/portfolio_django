@@ -29,7 +29,7 @@ SECRET_KEY = get_val_from_json(secret_key, 'SECRET_KEY')
 
 #장고 smtp 관련 계정 및 설정정보 읽기
 smtp_key = get_json_content('confs/smtp_key.json')
-DEVELOPER_MAIL = 'sweetmeatsboy@naver.com'
+DEVELOPER_MAIL = 'sweetmeatsboy@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -40,7 +40,7 @@ EMAIL_PORT = get_val_from_json(smtp_key, 'EMAIL_PORT')
 DEFAULT_FROM_EMAIL = get_val_from_json(smtp_key, 'DEFAULT_FROM_EMAIL')
 
 #OAuth 관련 설정정보.
-oauth_key = get_json_content('auth_key.json')
+oauth_key = get_json_content('confs/auth_key.json')
 # FACEBOOK OAUTH 설정값.
 FACEBOOK = get_val_from_json(oauth_key, 'FACEBOOK')
 GOOGLE = get_val_from_json(oauth_key, 'GOOGLE')
