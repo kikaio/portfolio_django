@@ -1,6 +1,6 @@
 from .base import *
 
-sql_json = get_json_content('confs/db_dev.json')
+sql_json = get_json_content('db_dev.json')
 
 DATABASES = {
     'default': {
